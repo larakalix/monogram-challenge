@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
     return (
-        <div>
+        <div className="bg-gray-200 p-12 rounded-sm text-main-blue">
             <Head>
                 <title>Mweeter</title>
                 <meta
@@ -13,7 +13,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <h1>Hello fellows!</h1>
+            <h1 className="text-[2rem]">Welcome to Mweeter!</h1>
         </div>
     );
 }
