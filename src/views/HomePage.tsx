@@ -1,9 +1,22 @@
-import React from "react";
+import { Title } from "@components/generic/Title";
+import { FeedInput, Feeds } from "@components/home";
 
 export const HomePage = () => {
     return (
         <div>
-            <h1 className="text-[2rem]">Welcome to Mweeter!</h1>
+            <Title text="Your feed" />
+
+            <div className="grid grid-cols-2">
+                {/* Feeds */}
+                <div className="flex flex-col">
+                    <FeedInput />
+
+                    <Feeds />
+                </div>
+
+                {/* Following */}
+                <div></div>
+            </div>
         </div>
     );
 };
