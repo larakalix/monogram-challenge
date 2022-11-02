@@ -1,25 +1,24 @@
-import { Title } from "@components/generic/Title";
+import { ViewContentWrapper } from "@components/generic/ViewContentWrapper";
 import { FeedInput, Feeds, Suggestions } from "@components/home";
+import { ViewWrappperColSplitType } from "types/generic/generic";
 
 export const HomePage = () => {
     return (
-        <div className="max-w-full lg:max-w-5xl m-auto">
-            <Title text="Your feed" type={0} />
+        <ViewContentWrapper
+            title="Your feed"
+            splitType={ViewWrappperColSplitType.NotEquals}
+        >
+            {/* Feeds */}
+            <div className="flex flex-col pr-0 lg:pr-20">
+                <FeedInput />
 
-            {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6"> */}
-            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_15rem] gap-6 w-full max-w-[100vw] items-start">
-                {/* Feeds */}
-                <div className="flex flex-col pr-0 lg:pr-20">
-                    <FeedInput />
-
-                    <Feeds />
-                </div>
-
-                {/* Suggestions */}
-                <div className="flex flex-col">
-                    <Suggestions />
-                </div>
+                <Feeds />
             </div>
-        </div>
+
+            {/* Suggestions */}
+            <div className="flex flex-col">
+                <Suggestions />
+            </div>
+        </ViewContentWrapper>
     );
 };

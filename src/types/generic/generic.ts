@@ -14,3 +14,8 @@ export enum HeadingType {
     Title,
     Subtitle,
 }
+
+export enum ViewWrappperColSplitType {
+    Equals,
+    NotEquals,
+}
