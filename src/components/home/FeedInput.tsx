@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import { User } from "@components/generic/User";
-import { mweetValidationSchema } from "@validationSchemas/mweetSchemas";
+import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
 
 type InputProps = {
     feed: string;
@@ -20,7 +20,7 @@ export const FeedInput = () => {
 
             <Formik
                 enableReinitialize
-                validationSchema={mweetValidationSchema}
+                validationSchema={feedtValidationSchema}
                 initialValues={initialValues}
                 onSubmit={(values, actions) => {
                     console.log({ values, actions });
