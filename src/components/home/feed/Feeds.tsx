@@ -50,6 +50,18 @@ const feeds: FeedProps[] = [
             "Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean lacinia bibendum nulla sed consectetur. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Integer posuere erat a ante venenatis.",
         createdAt: "Oct 29, 2021",
     },
+    {
+        id: "734",
+        user: {
+            name: "Floyd Miles",
+            userName: "floydmiles",
+            thumnbnail:
+                "https://www.datocms-assets.com/85254/1667344987-floydmiles.png",
+        },
+        content:
+            "Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit amet fermentum. Etiam porta sem malesuada magna mollis euismod.",
+        createdAt: "Nov 1, 2021",
+    },
 ];
 
 export const Feeds = () => {
