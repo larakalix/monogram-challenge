@@ -1,4 +1,4 @@
-import { User } from "@components/generic/User";
+import { User } from "@components/generic";
 import { UserProps } from "types/data/user";
 
 type Props = {

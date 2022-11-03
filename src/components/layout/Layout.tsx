@@ -1,6 +1,9 @@
-import { User } from "@components/generic/User";
+import { useContext } from "react";
 import Link from "next/link";
+import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
+import AuthContext from "context/AuthContext";
+import { useRouter } from "next/router";
 
 const links: NavItems[] = [
     { label: "Home", route: "/" },
@@ -9,8 +12,12 @@ const links: NavItems[] = [
 ];
 
 export const Layout = () => {
-    const logout = () => {
-        console.log("Log out");
+    const { push } = useRouter();
+    const { user, logout } = useContext(AuthContext);
+
+    const handleLogout = async () => {
+        const isLogout = await logout(user?.issuer!);
+        if (isLogout) push("/auth");
     };
 
     return (
@@ -41,7 +48,7 @@ export const Layout = () => {
                     <li key={`logout-nav-item`}>
                         <button
                             className="bg-transparent text-link-gray text-[0.875rem] font-medium leading-[1.25rem] hover:bg-label-gray-active block w-full p-2 rounded-md text-start"
-                            onClick={logout}
+                            onClick={() => handleLogout()}
                         >
                             Log out
                         </button>

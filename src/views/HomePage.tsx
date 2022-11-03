@@ -1,4 +1,4 @@
-import { ViewContentWrapper } from "@components/generic/ViewContentWrapper";
+import { ViewContentWrapper } from "@components/generic";
 import { FeedInput, Feeds, Suggestions } from "@components/home";
 import { ViewWrappperColSplitType } from "types/generic/generic";
 

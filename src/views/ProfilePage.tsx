@@ -1,9 +1,8 @@
-import { Field, Form, Formik } from "formik";
-import { ViewContentWrapper } from "@components/generic/ViewContentWrapper";
+import { Form, Formik } from "formik";
 import { ViewWrappperColSplitType } from "types/generic/generic";
 import { FormField } from "types/data/formField";
 import { userValidationSchema } from "@validationSchemas/profileValidationSchema";
-import { UseFormField } from "@components/profile/UserFormField";
+import { ViewContentWrapper, UseFormField } from "@components/generic";
 
 type InputProps = {
     firstName: string;

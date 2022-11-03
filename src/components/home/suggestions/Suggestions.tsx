@@ -1,5 +1,4 @@
-import { Title } from "@components/generic/Title";
-import { User } from "@components/generic/User";
+import { Title, User } from "@components/generic";
 import { UserProps } from "types/data/user";
 
 const suggestions: UserProps[] = [
@@ -21,7 +20,7 @@ export const Suggestions = () => {
     const follow = (user: string) => {
         console.log(`Following @${user}`);
     };
-    
+
     return (
         <div>
             <Title text="Follow others" type={1} />

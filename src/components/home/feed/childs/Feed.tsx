@@ -1,4 +1,4 @@
-import { User } from "@components/generic/User";
+import { User } from "@components/generic";
 import { FeedProps } from "types/data/feed";
 
 export const Feed = ({ user, content, createdAt }: Omit<FeedProps, "id">) => {

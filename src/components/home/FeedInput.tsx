@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import { User } from "@components/generic/User";
+import { User } from "@components/generic";
 import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
 
 type InputProps = {

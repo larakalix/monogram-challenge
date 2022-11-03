@@ -1,4 +1,4 @@
-import { ViewContentWrapper } from "@components/generic/ViewContentWrapper";
+import { ViewContentWrapper } from "@components/generic";
 import { Followed } from "@components/follow";
 import { useFollowed } from "@hooks/index";
 
