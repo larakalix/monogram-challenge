@@ -1,9 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import clsx from "clsx";
+import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
 import AuthContext from "context/AuthContext";
-import { useRouter } from "next/router";
 
 const links: NavItems[] = [
     { label: "Home", route: "/" },
@@ -14,14 +16,33 @@ const links: NavItems[] = [
 export const Layout = () => {
     const { push } = useRouter();
     const { user, logout } = useContext(AuthContext);
+    const [toogle, setToogle] = useState(false);
 
     const handleLogout = async () => {
         const isLogout = await logout(user?.issuer!);
         if (isLogout) push("/auth");
     };
 
+    const styles = clsx({
+        ["left-0"]: toogle,
+        ["left-[-15rem]"]: !toogle,
+    });
+
     return (
-        <div className="bg-sidebar min-h-[100vh] w-[15rem] max-w-[20rem] p-5 border-r border-main-gray-border fixed">
+        <div
+            className={`bg-sidebar min-h-[100vh] w-[15rem] max-w-[20rem] p-5 border-r border-main-gray-border absolute md:fixed ${styles} md:left-0 transition-all`}
+        >
+            <button
+                className="absolute right-[-2.5rem] cursor-pointer flex md:hidden"
+                onClick={() => setToogle((state) => !state)}
+            >
+                {toogle ? (
+                    <CgClose className="text-[1.5rem]" />
+                ) : (
+                    <CgMenuLeft className="text-[1.5rem]" />
+                )}
+            </button>
+
             <small>
                 <Link
                     href={`/`}

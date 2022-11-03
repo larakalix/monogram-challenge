@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const { user, isAuthenticated, isLoading, setUser, logout } = useAuth();
 
     const styles = clsx({
-        ["py-10 px-16 ml-60"]: isAuthenticated,
+        ["py-20 md:py-10 px-8 md:px-16 ml-0 md:ml-60"]: isAuthenticated,
     });
 
     return (

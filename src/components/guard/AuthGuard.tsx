@@ -12,24 +12,11 @@ export const AuthGuard = ({ children }: Props) => {
 
     useEffect(() => {
         authCheck(router.asPath);
-        // const hideContent = () => setUser({} as any);
-        // router.events.on("routeChangeStart", hideContent);
-
-        // router.events.on("routeChangeComplete", authCheck);
-
-        // return () => {
-        //     router.events.off("routeChangeStart", hideContent);
-        //     router.events.off("routeChangeComplete", authCheck);
-        // };
     }, []);
 
     const authCheck = async (url: string) => {
-        // redirect to login page if accessing a private page and not logged in
-        // const path = url.split("?")[0];
         const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY!);
-
         const isLoggedIn = await magic.user.isLoggedIn();
-        console.log("isLoggedIn", isLoggedIn);
 
         if (!isLoggedIn) {
             router.push("/auth");
