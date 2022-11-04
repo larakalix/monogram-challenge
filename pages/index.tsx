@@ -22,6 +22,10 @@ export default function Index() {
     return (
         <section className="flex items-center justify-center flex-col h-screen">
             <ImMweeter className="w-12 h-12 text-main-blue" />
+            <h1 className="text-heading-gray font-extrabold text-[1.5rem] leading-[1.65rem] mt-2">
+                mweeter
+            </h1>
+
             <div className="mt-4 p-2 text-center max-w-sm w-full">
                 <Formik
                     enableReinitialize

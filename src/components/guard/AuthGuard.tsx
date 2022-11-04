@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Router from "next/router";
 import useSWR from "swr";
+import { useUserStore } from "@store/userStore";
 
 type Props = { children: JSX.Element | JSX.Element[] };
 
@@ -12,6 +13,7 @@ const fetcher = (url: string) =>
         });
 
 export const AuthGuard = ({ children }: Props) => {
+    const { isAuthenticated, setUser } = useUserStore((state) => state);
     const { data, error } = useSWR("/api/user", fetcher);
     const user = data?.user;
     const finished = Boolean(data);
@@ -24,6 +26,7 @@ export const AuthGuard = ({ children }: Props) => {
             Router.push("/");
             return;
         } else {
+            if (isAuthenticated) setUser(user);
             Router.push("/home");
         }
     }, [finished, hasUser]);

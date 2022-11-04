@@ -1,6 +1,8 @@
 import { Title } from "./Title";
 import { HeadingType, ViewWrappperColSplitType } from "types/generic/generic";
 import clsx from "clsx";
+import { useUserStore } from "@store/userStore";
+import { Loader } from "./Loader";
 
 type Props = {
     title: string;
@@ -12,11 +14,16 @@ export const ViewContentWrapper = ({
     children,
     splitType = ViewWrappperColSplitType.Equals,
 }: Props) => {
+    const isAuthenticated = useUserStore((state) => state.isAuthenticated);
+
     const styles = clsx({
         ["lg:grid-cols-2"]: splitType === ViewWrappperColSplitType.Equals,
         ["lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[minmax(0,1fr)_340px]"]:
             splitType === ViewWrappperColSplitType.NotEquals,
     });
+
+    if (!isAuthenticated) return <Loader />;
+
     return (
         <div className="max-w-full lg:max-w-5xl m-auto">
             <Title text={title} type={HeadingType.Title} />
