@@ -1,27 +1,22 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import clsx from "clsx";
 import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
-import AuthContext from "context/AuthContext";
+import { API_CONSTANTS } from "@constants/api";
 
 const links: NavItems[] = [
-    { label: "Home", route: "/" },
+    { label: "Home", route: "/home" },
     { label: "Following", route: "/following" },
     { label: "Your profile", route: "/profile" },
 ];
 
 export const Layout = () => {
-    const { push } = useRouter();
-    const { user, logout } = useContext(AuthContext);
     const [toogle, setToogle] = useState(false);
 
-    const handleLogout = async () => {
-        const isLogout = await logout(user?.issuer!);
-        if (isLogout) push("/auth");
-    };
+    const handleLogout = async () =>
+        await fetch(API_CONSTANTS.logout, { method: "POST" });
 
     const styles = clsx({
         ["left-0"]: toogle,

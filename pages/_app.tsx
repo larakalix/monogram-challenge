@@ -5,27 +5,17 @@ import clsx from "clsx";
 import "../styles/globals.css";
 import { AuthGuard } from "@components/guard/AuthGuard";
 import { Layout } from "@components/layout/Layout";
-import { AuthContext } from "context/AuthContext";
-import { useAuth } from "@hooks/auth/useAuth";
 
 export default function App({ Component, pageProps }: AppProps) {
-    const { push } = useRouter();
-    const { user, isAuthenticated, isLoading, setUser, logout } = useAuth();
+    const { asPath } = useRouter();
 
+    const isAuthenticated = !["/"].includes(asPath);
     const styles = clsx({
         ["py-20 md:py-10 px-8 md:px-16 ml-0 md:ml-60"]: isAuthenticated,
     });
 
     return (
-        <AuthContext.Provider
-            value={{ user, isAuthenticated, isLoading, setUser, logout }}
-        >
-            {/* {!isAuthenticated && isLoading && (
-                <div className="flex items-center justify-center h-screen">
-                    <span>Loading</span>
-                </div>
-            )} */}
-
+        <div>
             <AuthGuard>
                 <main className="flex items-start">
                     {isAuthenticated && <Layout />}
@@ -46,6 +36,6 @@ export default function App({ Component, pageProps }: AppProps) {
                     </section>
                 </main>
             </AuthGuard>
-        </AuthContext.Provider>
+        </div>
     );
 }

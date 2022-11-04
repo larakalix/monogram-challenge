@@ -1,33 +1,32 @@
-import AuthContext from "context/AuthContext";
-import { useContext, useEffect } from "react";
-import { useRouter } from "next/router";
-import { Magic } from "magic-sdk";
+import { useEffect } from "react";
+import Router from "next/router";
+import useSWR from "swr";
 
 type Props = { children: JSX.Element | JSX.Element[] };
 
+const fetcher = (url: string) =>
+    fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            return { user: data?.user || null, isAuthenticated: !!data?.user };
+        });
+
 export const AuthGuard = ({ children }: Props) => {
-    const router = useRouter();
-    const { isAuthenticated, setUser } = useContext(AuthContext);
-    const publicPaths = ["/auth"];
+    const { data, error } = useSWR("/api/user", fetcher);
+    const user = data?.user;
+    const finished = Boolean(data);
+    const hasUser = Boolean(user);
 
     useEffect(() => {
-        authCheck(router.asPath);
-    }, []);
+        if (!finished) return;
 
-    const authCheck = async (url: string) => {
-        const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY!);
-        const isLoggedIn = await magic.user.isLoggedIn();
-
-        if (!isLoggedIn) {
-            router.push("/auth");
+        if (!hasUser || error) {
+            Router.push("/");
+            return;
         } else {
-            const { email } = await magic.user.getMetadata();
-            setUser(email!);
-            router.push("/");
+            Router.push("/home");
         }
-    };
+    }, [finished, hasUser]);
 
-    if (publicPaths.includes(router.asPath)) return <>{children}</>;
-
-    return <>{isAuthenticated && children}</>;
+    return <>{children}</>;
 };

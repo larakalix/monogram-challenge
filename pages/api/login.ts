@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Magic } from "@magic-sdk/admin";
+import { magic } from "./../../lib/magic";
+import { setLoginSession } from "./../../lib/auth";
 import { AuthResponse } from "types/api/response";
 
 export default async function login(
@@ -7,7 +8,6 @@ export default async function login(
     res: NextApiResponse<Partial<AuthResponse>>
 ) {
     try {
-        const magic = new Magic(process.env.NEXT_MAGIC_SECRET_KEY!);
         const { authorization } = req.headers;
 
         if (!authorization)
@@ -16,13 +16,12 @@ export default async function login(
                 .json({ error: "Missing authorization header" });
 
         const didToken = authorization.split(" ")[1];
-        magic.token.validate(didToken);
+        const metadata = await magic.users.getMetadataByToken(didToken);
+        const session = { ...metadata };
 
-        res.status(200).json({ authenticated: true });
+        await setLoginSession(res, session);
+        res.status(200).send({ authenticated: true });
     } catch (error: any) {
-        res.status(500).json({
-            authenticated: false,
-            error: error.message || error.toString(),
-        });
+        res.status(500).end(error.message);
     }
 }

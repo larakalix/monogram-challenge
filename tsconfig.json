@@ -16,6 +16,7 @@
         "jsx": "preserve",
         "incremental": true,
         "paths": {
+            "@constants/*": ["constants/*"],
             "@components/*": ["components/*"],
             "@store/*": ["store/*"],
             "@hooks/*": ["hooks/*"],
