@@ -5,6 +5,11 @@ export interface IGeneric {
     id: string;
 }
 
+export interface IGenericWithTimestamps extends IGeneric {
+    createdAt?: string;
+    updatedAt?: string;
+}
+
 export interface GenericHeadingProps {
     text: string;
     type: HeadingType;

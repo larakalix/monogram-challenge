@@ -1,6 +1,7 @@
 import { Field, Form, Formik } from "formik";
 import { User } from "@components/generic";
 import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
+import { useUserStore } from "@store/userStore";
 
 type InputProps = {
     feed: string;
@@ -9,12 +10,19 @@ type InputProps = {
 const initialValues: InputProps = { feed: "" };
 
 export const FeedInput = () => {
+    const { user } = useUserStore((state) => state);
+
+    if (!user) return null;
+
     return (
         <div className="flex items-start w-full mb-10">
             <User
-                name="Albert Flores"
-                userName="aflores"
-                thumnbnail="https://www.datocms-assets.com/85254/1667341417-albert.png"
+                id={user.id}
+                name={user.name}
+                lastname={user.lastname}
+                email={user.email}
+                username={user.username}
+                thumbnail={user.thumbnail}
                 onlyThumbnail
             />
 

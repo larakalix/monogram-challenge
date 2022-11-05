@@ -19,6 +19,7 @@
             "@constants/*": ["constants/*"],
             "@components/*": ["components/*"],
             "@store/*": ["store/*"],
+            "@services/*": ["services/*"],
             "@hooks/*": ["hooks/*"],
             "@types/*": ["types/*"],
             "@validationSchemas/*": ["validationSchemas/*"],

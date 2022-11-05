@@ -5,6 +5,9 @@ import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
 import { API_CONSTANTS } from "@constants/api";
+import { useUserStore } from "@store/userStore";
+import Router from "next/router";
+import { APP_ROUTES } from "@constants/routes";
 
 const links: NavItems[] = [
     { label: "Home", route: "/home" },
@@ -14,9 +17,12 @@ const links: NavItems[] = [
 
 export const Layout = () => {
     const [toogle, setToogle] = useState(false);
+    const { user } = useUserStore((state) => state);
 
-    const handleLogout = async () =>
-        await fetch(API_CONSTANTS.logout, { method: "POST" });
+    const handleLogout = async () => {
+        const isOut = await fetch(API_CONSTANTS.logout, { method: "POST" });
+        if (isOut.status === 302) Router.push(APP_ROUTES.home);
+    };
 
     const styles = clsx({
         ["left-0"]: toogle,
@@ -72,11 +78,16 @@ export const Layout = () => {
                 </ol>
             </nav>
 
-            <User
-                name="Albert Flores"
-                userName="aflores"
-                thumnbnail="https://www.datocms-assets.com/85254/1667341417-albert.png"
-            />
+            {user && (
+                <User
+                    id={user.id}
+                    name={user.name}
+                    lastname={user.lastname}
+                    email={user.email}
+                    username={user.username}
+                    thumbnail={user.thumbnail}
+                />
+            )}
         </div>
     );
 };

@@ -10,6 +10,7 @@ specifiers:
   autoprefixer: ^10.4.13
   clsx: ^1.2.1
   cookie: ^0.5.0
+  date-fns: ^2.29.3
   formik: ^2.2.9
   graphql: ^16.6.0
   graphql-request: ^5.0.0
@@ -23,6 +24,7 @@ specifiers:
   swr: ^1.3.0
   tailwindcss: ^3.2.1
   typescript: 4.8.4
+  use-magic-link: ^1.1.1
   yup: ^0.32.11
   zustand: ^4.1.4
 
@@ -34,6 +36,7 @@ dependencies:
   '@types/react-dom': 18.0.8
   clsx: 1.2.1
   cookie: 0.5.0
+  date-fns: 2.29.3
   formik: 2.2.9_react@18.2.0
   graphql: 16.6.0
   graphql-request: 5.0.0_graphql@16.6.0
@@ -45,6 +48,7 @@ dependencies:
   react-icons: 4.6.0_react@18.2.0
   swr: 1.3.0_react@18.2.0
   typescript: 4.8.4
+  use-magic-link: 1.1.1_react@18.2.0
   yup: 0.32.11
   zustand: 4.1.4_react@18.2.0
 
@@ -508,6 +512,10 @@ packages:
     resolution: {integrity: sha512-zPMVc3ZYlGLNk4mpK1NzP2wg0ml9t7fUgDsayR5Y5rSzxQilzR9FGu/EH2jQOcKSAeAfWeylyW8juy3OkWRvNA==}
     dev: false
 
+  /async-sema/3.1.1:
+    resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}
+    dev: false
+
   /asynckit/0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
     dev: false
@@ -751,6 +759,11 @@ packages:
       type: 1.2.0
     dev: false
 
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
+
   /datocms-listen/0.1.10:
     resolution: {integrity: sha512-gaQ69vMC+shRsj6fFo3xEMcUpxtLElJIT0HBTaQHzy0nk1bCeWbwgzYzI8r1FLukD6KV4oFm/YGrGBNbnwOovg==}
     dev: false
@@ -937,6 +950,13 @@ packages:
     dependencies:
       bn.js: 4.11.6
       number-to-bn: 1.7.0
+    dev: false
+
+  /event-emitter/0.3.5:
+    resolution: {integrity: sha512-D9rRn9y7kLPnJ+hMq7S/nhvoKwwvVJahBi2BPmx3bvbsEdK3W9ii8cBSGjP+72/LnM4n6fo3+dkCX5FeTQruXA==}
+    dependencies:
+      d: 1.0.1
+      es5-ext: 0.10.62
     dev: false
 
   /eventemitter3/4.0.4:
@@ -1220,6 +1240,15 @@ packages:
 
   /is-typedarray/1.0.0:
     resolution: {integrity: sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==}
+    dev: false
+
+  /isomorphic-unfetch/3.1.0:
+    resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
+    dependencies:
+      node-fetch: 2.6.7
+      unfetch: 4.2.0
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /js-sha3/0.8.0:
@@ -1917,6 +1946,10 @@ packages:
     hasBin: true
     dev: false
 
+  /unfetch/4.2.0:
+    resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
+    dev: false
+
   /universal-base64/2.1.0:
     resolution: {integrity: sha512-WeOkACVnIXJZr/qlv7++Rl1zuZOHN96v2yS5oleUuv8eJOs5j9M5U3xQEIoWqn1OzIuIcgw0fswxWnUVGDfW6g==}
     dev: false
@@ -1945,6 +1978,19 @@ packages:
       '@babel/runtime': 7.20.1
       dequal: 2.0.3
       react: 18.2.0
+    dev: false
+
+  /use-magic-link/1.1.1_react@18.2.0:
+    resolution: {integrity: sha512-dwpJXjo6PrZxtHVy7k9AC7MBCBBeyywl5f+cOHgjQrf3Bi9RzaznxvF+9ea7BiFsRKJcks1OlqQYwgdBBlExOg==}
+    peerDependencies:
+      react: ^16.11.0
+    dependencies:
+      async-sema: 3.1.1
+      event-emitter: 0.3.5
+      isomorphic-unfetch: 3.1.0
+      react: 18.2.0
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:

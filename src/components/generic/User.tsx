@@ -6,23 +6,33 @@ interface Props extends UserProps {
 }
 
 export const User = ({
+    id,
     name,
-    userName,
-    thumnbnail,
+    lastname,
+    email,
+    username,
+    thumbnail,
     onlyThumbnail = false,
 }: Props) => {
     return (
         <div className="flex items-center justify-center">
-            <div>
-                <Image src={thumnbnail} alt={name} width={36} height={36} />
-            </div>
+            {thumbnail?.url && (
+                <div className="overflow-hidden rounded-full w-9 h-9">
+                    <Image
+                        src={thumbnail.url}
+                        alt={thumbnail.basename}
+                        width={36}
+                        height={36}
+                    />
+                </div>
+            )}
             {!onlyThumbnail && (
                 <div className="flex flex-col ml-3">
                     <span className="text-label-gray font-medium text-[0.875rem] leading-[1.25rem]">
-                        {name}
+                        {name} {lastname}
                     </span>
                     <span className="text-sub-label-gray font-medium text-[0.75rem] leading-4">
-                        @{userName}
+                        @{username}
                     </span>
                 </div>
             )}

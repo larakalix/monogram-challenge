@@ -3,29 +3,26 @@ import { ViewWrappperColSplitType } from "types/generic/generic";
 import { FormField } from "types/data/formField";
 import { userValidationSchema } from "@validationSchemas/profileValidationSchema";
 import { ViewContentWrapper, UseFormField } from "@components/generic";
+import { useUserStore } from "@store/userStore";
+import { UserProps } from "types/data/user";
 
-type InputProps = {
-    firstName: string;
-    lasttName: string;
-    userName: string;
-    email: string;
-};
-
-const initialValues: InputProps = {
-    firstName: "",
-    lasttName: "",
-    userName: "",
+const initialValues: Omit<UserProps, "id" | "thumbnail"> = {
+    name: "",
+    lastname: "",
+    username: "",
     email: "",
 };
 
 const formFields: FormField[] = [
-    { label: "First Name", name: "firstName" },
-    { label: "Last Name", name: "lasttName" },
-    { label: "Your handle (username)", name: "userName" },
+    { label: "First Name", name: "name" },
+    { label: "Last Name", name: "lastname" },
+    { label: "Your handle (username)", name: "username" },
     { label: "Email address", name: "email" },
 ];
 
 export const ProfilePage = () => {
+    const { user } = useUserStore((state) => state);
+
     return (
         <ViewContentWrapper
             title="Your profile"
@@ -34,7 +31,7 @@ export const ProfilePage = () => {
             <Formik
                 enableReinitialize
                 validationSchema={userValidationSchema}
-                initialValues={initialValues}
+                initialValues={user || initialValues}
                 onSubmit={(values, actions) => {
                     console.log({ values, actions });
                     alert(JSON.stringify(values, null, 2));

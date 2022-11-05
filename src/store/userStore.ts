@@ -1,11 +1,12 @@
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { MagicUserMetadata } from "magic-sdk";
+import { UserProps } from "types/data/user";
 
 interface UserState {
-    user: MagicUserMetadata | null;
+    user: UserProps | null;
     isAuthenticated: boolean;
-    setUser: (user: MagicUserMetadata) => void;
+    setUser: (user: UserProps) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -15,7 +16,11 @@ export const useUserStore = create<UserState>()(
                 user: null,
                 isAuthenticated: false,
                 setUser: (user) => {
-                    set((state) => ({ ...state, user, isAuthenticated: true }));
+                    set((state) => ({
+                        ...state,
+                        user,
+                        isAuthenticated: true,
+                    }));
                 },
             }),
             {

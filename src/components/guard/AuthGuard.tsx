@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import Router from "next/router";
 import useSWR from "swr";
 import { useUserStore } from "@store/userStore";
+import { getUser } from "@services/userService";
+import { MagicUserMetadata } from "magic-sdk";
 
 type Props = { children: JSX.Element | JSX.Element[] };
 
@@ -13,21 +15,26 @@ const fetcher = (url: string) =>
         });
 
 export const AuthGuard = ({ children }: Props) => {
-    const { isAuthenticated, setUser } = useUserStore((state) => state);
+    const { setUser } = useUserStore((state) => state);
     const { data, error } = useSWR("/api/user", fetcher);
     const user = data?.user;
     const finished = Boolean(data);
     const hasUser = Boolean(user);
 
     useEffect(() => {
+        const getUserAsync = async (user: MagicUserMetadata) => {
+            const current = await getUser(String(user.issuer));
+            setUser(current);
+            Router.push("/home");
+        };
+
         if (!finished) return;
 
         if (!hasUser || error) {
             Router.push("/");
             return;
         } else {
-            if (isAuthenticated) setUser(user);
-            Router.push("/home");
+            getUserAsync(user);
         }
     }, [finished, hasUser]);
 

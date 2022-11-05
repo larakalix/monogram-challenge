@@ -16,12 +16,16 @@ export default async function login(
                 .json({ error: "Missing authorization header" });
 
         const didToken = authorization.split(" ")[1];
+
         const metadata = await magic.users.getMetadataByToken(didToken);
         const session = { ...metadata };
+
+        console.log(session);
 
         await setLoginSession(res, session);
         res.status(200).send({ authenticated: true });
     } catch (error: any) {
+        console.log(error);
         res.status(500).end(error.message);
     }
 }

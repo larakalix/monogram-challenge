@@ -1,5 +1,6 @@
 import { ViewContentWrapper } from "@components/generic";
 import { FeedInput, Feeds, Suggestions } from "@components/home";
+import { FeedProps } from "types/data/feed";
 import { ViewWrappperColSplitType } from "types/generic/generic";
 
 export const HomePage = () => {

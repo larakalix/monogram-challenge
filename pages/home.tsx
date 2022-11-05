@@ -1,26 +1,28 @@
+import { useEffect } from "react";
+import { GetServerSidePropsContext } from "next";
+import { getFeeds } from "@services/feedService";
+import { FeedProps } from "types/data/feed";
 import { HomePage } from "@views/HomePage";
-import { GetServerSidePropsContext, InferGetStaticPropsType } from "next";
+import { useFeedStore } from "@store/feedStore";
 
-export default function Home({}: InferGetStaticPropsType<
-    typeof getServerSideProps
->) {
-    return (
-        <>
-            <HomePage />
-        </>
-    );
+interface Props {
+    feeds: FeedProps[];
 }
 
-const HOMEPAGE_QUERY = `query HomePage($limit: IntType) {
-    allBlogPosts(first: $limit) {
-      title
-    }
-  }`;
+export default function Home({ feeds }: Props) {
+    const { setFeeds } = useFeedStore((state) => state);
+
+    useEffect(() => {
+        setFeeds(feeds);
+    }, []);
+
+    return <HomePage />;
+}
 
 export const getServerSideProps = async ({
     preview,
 }: GetServerSidePropsContext) => {
-    return {
-        props: {},
-    };
+    let feeds = await getFeeds();
+
+    return { props: { feeds } };
 };

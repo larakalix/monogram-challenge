@@ -15,12 +15,11 @@ export default async function logout(
             await magic.users.logoutByIssuer(session.issuer);
             removeTokenCookie(res);
         }
+
+        res.status(302).json({ logout: true });
     } catch (error: any) {
         res.status(500).json({
             error: error.message || error.toString(),
         });
     }
-
-    res.writeHead(302, { Location: "/" });
-    res.end();
 }

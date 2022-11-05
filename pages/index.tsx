@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { Form, Formik } from "formik";
 import { ImTwitter as ImMweeter } from "react-icons/im";
+import { Magic } from "magic-sdk";
 import { UseFormField } from "@components/generic";
 import { FormField } from "types/data/formField";
-import { Magic } from "magic-sdk";
 import { API_CONSTANTS } from "@constants/api";
 
 type InputProps = {
@@ -31,27 +31,41 @@ export default function Index() {
                     enableReinitialize
                     initialValues={initialValues}
                     onSubmit={async ({ email }, actions) => {
-                        console.log({ email });
                         actions.setSubmitting(false);
 
-                        const magicSecret = String(
-                            process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY
-                        );
-                        const magic = new Magic(magicSecret);
-                        const didToken = await magic.auth.loginWithMagicLink({
-                            email: email,
-                        });
+                        try {
+                            const magicSecret =
+                                process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY;
+                            if (!magicSecret) return;
 
-                        const res = await fetch(API_CONSTANTS.login, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${didToken}`,
-                            },
-                            body: JSON.stringify({ email }),
-                        });
+                            // const magic = new Magic(magicSecret);
 
-                        if (res.status === 200) push("/profile");
+                            // const isLogged = await magic.user.isLoggedIn();
+
+                            // const didToken = isLogged
+                            //     ? await magic.user.getIdToken()
+                            //     : await magic.auth.loginWithMagicLink({
+                            //           email: email,
+                            //       });
+
+                            const didToken = process.env.NEXT_TEST_AUTH;
+
+                            if (!didToken) return;
+
+                            const res = await fetch("/api/login", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${didToken}`,
+                                },
+                                body: JSON.stringify({ email: email }),
+                            });
+
+                            if (res.status === 200) push("/home");
+                            else throw new Error(await res.text());
+                        } catch (error) {
+                            console.log("Something went wrong", error);
+                        }
                     }}
                 >
                     {({ errors, isSubmitting }) => (

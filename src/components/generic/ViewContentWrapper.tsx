@@ -22,7 +22,7 @@ export const ViewContentWrapper = ({
             splitType === ViewWrappperColSplitType.NotEquals,
     });
 
-    if (!isAuthenticated) return <Loader />;
+    // if (!isAuthenticated) return <Loader />;
 
     return (
         <div className="max-w-full lg:max-w-5xl m-auto">
