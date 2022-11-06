@@ -1,9 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { getUser } from "@services/userService";
+import { UserProps } from "types/data/user";
 import { getLoginSession } from "../../lib/auth";
-import { magic } from "./../../lib/magic";
+import { UserQueryType } from "types/services/user";
 
-export default async function user(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getLoginSession(req);
+export default async function user(
+    req: NextApiRequest,
+    res: NextApiResponse<{ user: UserProps }>
+) {
+    const { issuer } = await getLoginSession(req);
+    const user = await getUser(String(issuer), UserQueryType.ONE_USER);
 
-    res.status(200).json({ user: session || null });
+    res.status(200).json({ user: { ...user, issuer } });
 }

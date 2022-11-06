@@ -1,12 +1,15 @@
-import { UserProps } from "types/data/user";
+import { FollowerProps } from "types/data/follower";
 
 export const useFollowed = () => {
-    const sliceIntoChunks = (collection: UserProps[], size: number) => {
-        const res = [];
-        for (let i = 0; i < collection.length; i += size)
-            res.push(collection.slice(i, i + size));
+    const sliceIntoChunks = (collection: FollowerProps[], size: number) => {
+        if (collection?.length || collection?.length <= size)
+            return [[...collection]];
 
-        return res;
+        const chunks = [];
+        for (let i = 0; i < collection.length; i += size)
+            chunks.push(collection.slice(i, i + size));
+
+        return chunks;
     };
 
     return { sliceIntoChunks };

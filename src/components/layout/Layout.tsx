@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Router from "next/router";
 import Link from "next/link";
 import clsx from "clsx";
 import { CgMenuLeft, CgClose } from "react-icons/cg";
@@ -6,7 +7,6 @@ import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
 import { API_CONSTANTS } from "@constants/api";
 import { useUserStore } from "@store/userStore";
-import Router from "next/router";
 import { APP_ROUTES } from "@constants/routes";
 
 const links: NavItems[] = [
@@ -31,7 +31,7 @@ export const Layout = () => {
 
     return (
         <div
-            className={`bg-sidebar min-h-[100vh] w-[15rem] max-w-[20rem] p-5 border-r border-main-gray-border absolute md:fixed ${styles} md:left-0 transition-all`}
+            className={`bg-sidebar min-h-[100vh] w-[15rem] max-w-[20rem] p-5 border-r border-main-gray-border absolute md:fixed ${styles} md:left-0 transition-all z-10`}
         >
             <button
                 className="absolute right-[-2.5rem] cursor-pointer flex md:hidden"

@@ -1,10 +1,11 @@
 import { Feed } from "./childs/Feed";
 import { FeedProps } from "types/data/feed";
-import { useFeedStore } from "@store/feedStore";
 
-export const Feeds = () => {
-    const { feeds } = useFeedStore((state) => state);
+type Props = {
+    feeds: FeedProps[];
+};
 
+export const Feeds = ({ feeds }: Props) => {
     return (
         <div className="w-full">
             {feeds.map(({ id, user, content, createdAt }) => (

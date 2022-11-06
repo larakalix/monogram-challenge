@@ -20,8 +20,6 @@ export default async function login(
         const metadata = await magic.users.getMetadataByToken(didToken);
         const session = { ...metadata };
 
-        console.log(session);
-
         await setLoginSession(res, session);
         res.status(200).send({ authenticated: true });
     } catch (error: any) {

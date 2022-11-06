@@ -1,14 +1,17 @@
-import { ViewContentWrapper } from "@components/generic";
+import { Loader, ViewContentWrapper } from "@components/generic";
 import { Followed } from "@components/follow";
 import { useFollowed } from "@hooks/index";
-import { UserProps } from "types/data/user";
+import { useUserStore } from "@store/userStore";
 
-export const FollowPage = ({ followed }: { followed: UserProps[] }) => {
+export const FollowPage = () => {
+    const { user } = useUserStore((state) => state);
     const { sliceIntoChunks } = useFollowed();
+
+    if (!user?.followers) return <Loader />;
 
     return (
         <ViewContentWrapper title="People you follow">
-            {sliceIntoChunks(followed, 4).map((followed, index) => (
+            {sliceIntoChunks(user.followers, 4).map((followed, index) => (
                 <div
                     key={`row_${index}`}
                     className="flex flex-col pr-0 lg:pr-20"

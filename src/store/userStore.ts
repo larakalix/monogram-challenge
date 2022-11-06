@@ -1,12 +1,15 @@
 import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { MagicUserMetadata } from "magic-sdk";
 import { UserProps } from "types/data/user";
 
+interface Props extends UserProps {
+    issuer?: string;
+}
+
 interface UserState {
-    user: UserProps | null;
+    user: Props | null;
     isAuthenticated: boolean;
-    setUser: (user: UserProps) => void;
+    setUser: (user: Props) => void;
 }
 
 export const useUserStore = create<UserState>()(

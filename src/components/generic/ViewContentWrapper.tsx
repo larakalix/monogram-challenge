@@ -6,6 +6,7 @@ import { Loader } from "./Loader";
 
 type Props = {
     title: string;
+    subtitle?: string;
     children: JSX.Element | JSX.Element[];
     splitType?: ViewWrappperColSplitType;
 };
@@ -13,6 +14,7 @@ export const ViewContentWrapper = ({
     title,
     children,
     splitType = ViewWrappperColSplitType.Equals,
+    subtitle,
 }: Props) => {
     const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
@@ -26,6 +28,7 @@ export const ViewContentWrapper = ({
 
     return (
         <div className="max-w-full lg:max-w-5xl m-auto">
+            {subtitle && <p className="text-sub-label-gray">{subtitle}</p>}
             <Title text={title} type={HeadingType.Title} />
 
             <div

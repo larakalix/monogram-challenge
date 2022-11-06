@@ -1,8 +1,8 @@
 import { User } from "@components/generic";
-import { UserProps } from "types/data/user";
+import { FollowerProps } from "types/data/follower";
 
 type Props = {
-    followed: UserProps[];
+    followed: FollowerProps[];
 };
 
 export const Followed = ({ followed }: Props) => {
@@ -12,10 +12,15 @@ export const Followed = ({ followed }: Props) => {
 
     return (
         <>
-            {followed.map(
-                ({ id, name, lastname, username, email, thumbnail }) => (
+            {followed.map(({ follower }) => {
+                if (!follower) return null;
+
+                const { id, name, lastname, email, username, thumbnail } =
+                    follower;
+
+                return (
                     <div
-                        key={username}
+                        key={follower?.username}
                         className="w-full flex justify-between items-center pt-4 pb-6 px-0 border-t border-main-gray-border"
                     >
                         <User
@@ -31,11 +36,11 @@ export const Followed = ({ followed }: Props) => {
                             className="border border-input-border rounded-full py-1 px-3 text-label-gray font-medium text-[0.875rem]"
                             onClick={() => follow(username)}
                         >
-                            Follow
+                            Unfollow
                         </button>
                     </div>
-                )
-            )}
+                );
+            })}
         </>
     );
 };

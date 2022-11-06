@@ -1,26 +1,54 @@
 import { request } from "./../../lib/datocms";
 import { UserProps } from "types/data/user";
 
-const FOLLOWED_QUERY = `query Feeds {
-    allFeeds(orderBy: _createdAt_DESC) {
-        id
-        createdAt
-        content
-        user {
-          name
-          username
-          thumbnail {
-            url
-            basename
-          }
-        }
+const FOLLOWED_QUERY = `query Followed ($authreference: String)  {
+  allFollowers (
+		orderBy: _createdAt_DESC,
+		filter: {
+      authreference: { eq: $authreference}
+		}) {
+    id
+		authreference
+    follower {
+      username
+      thumbnail {
+        basename
+        url
+      }
+      name
+      lastname
+      id
+      email
+      authreference
     }
-  }`;
+    user {
+      username
+      thumbnail {
+        basename
+        url
+      }
+      name
+      lastname
+      id
+      email
+      authreference
+    }
+  }
+}`;
 
-export const getFolloweds = async (): Promise<UserProps[]> => {
+export const fetcher = (authreference: string) =>
+    request({
+        query: FOLLOWED_QUERY,
+        variables: { authreference },
+        preview: false,
+    });
+
+export const getFolloweds = async (
+    authreference: string
+): Promise<UserProps[]> => {
     const { allFeeds } = await request({
         query: FOLLOWED_QUERY,
-        variables: { limit: 100 },
+        variables: { authreference },
         preview: false,
     });
 
