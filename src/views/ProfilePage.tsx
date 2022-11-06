@@ -1,12 +1,15 @@
 import { Form, Formik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
 import { ViewWrappperColSplitType } from "types/generic/generic";
 import { FormField } from "types/data/formField";
 import { userValidationSchema } from "@validationSchemas/profileValidationSchema";
 import { ViewContentWrapper, UseFormField } from "@components/generic";
 import { useUserStore } from "@store/userStore";
-import { UserProps } from "types/data/user";
+import { GenericUserProps, UserProps } from "types/data/user";
+import { useProfile } from "@hooks/profile/useProfile";
+import { API_CONSTANTS } from "@constants/api";
 
-const initialValues: Omit<UserProps, "id" | "thumbnail"> = {
+const initialValues: Omit<GenericUserProps, "id"> = {
     name: "",
     lastname: "",
     username: "",
@@ -21,21 +24,38 @@ const formFields: FormField[] = [
 ];
 
 export const ProfilePage = () => {
-    const { user } = useUserStore((state) => state);
+    const { user, setUser } = useUserStore((state) => state);
+    const { submit } = useProfile(user!);
+
+    if (!user) return null;
+
+    const values: Omit<GenericUserProps, "id"> = user;
 
     return (
         <ViewContentWrapper
             title="Your profile"
             splitType={ViewWrappperColSplitType.NotEquals}
         >
+            <Toaster />
             <Formik
                 enableReinitialize
                 validationSchema={userValidationSchema}
-                initialValues={user || initialValues}
+                initialValues={values || initialValues}
                 onSubmit={(values, actions) => {
-                    console.log({ values, actions });
-                    alert(JSON.stringify(values, null, 2));
                     actions.setSubmitting(false);
+
+                    submit(values).then((res) => {
+                        if (res.ok)
+                            toast.success("Profile updated", {
+                                icon: "👏",
+                            });
+                        else toast.error("Something went wrong");
+
+                        setUser({
+                            ...user,
+                            ...values,
+                        });
+                    });
                 }}
             >
                 {({ errors, isSubmitting }) => (

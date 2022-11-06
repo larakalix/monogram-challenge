@@ -4,4 +4,6 @@ export const API_CONSTANTS = {
     user: "/api/user",
     feeds: "/api/feeds",
     profile: "/api/profile",
+    newFeed: "/api/feed/new",
+    updateUser: "/api/profile/update",
 };

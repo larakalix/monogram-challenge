@@ -1,14 +1,25 @@
-import { IGenericWithTimestamps } from "types/generic/generic";
+import { IGeneric, IGenericWithTimestamps } from "types/generic/generic";
 import { FollowerProps } from "./follower";
 
 export interface AuthProps {
     email: string;
 }
 
-export interface UserProps extends AuthProps, IGenericWithTimestamps {
+interface PersonalUserProps {
     name: string;
     lastname: string;
     username: string;
+}
+
+export interface GenericUserProps
+    extends IGeneric,
+        AuthProps,
+        PersonalUserProps {}
+
+export interface UserProps
+    extends PersonalUserProps,
+        AuthProps,
+        IGenericWithTimestamps {
     thumbnail: ThumbnailProps;
     followers?: FollowerProps[];
     issuer?: string;

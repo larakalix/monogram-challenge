@@ -1,4 +1,4 @@
-import { request } from "./../../lib/datocms";
+import { clientRequest, request } from "./../../lib/datocms";
 import { FeedProps } from "types/data/feed";
 import { FeedQueryType } from "types/services/feed";
 
@@ -62,4 +62,27 @@ export const getFeeds = async (
     });
 
     return allFeeds;
+};
+
+export const createFeed = async ({ content, user }: FeedProps) => {
+    const client = await clientRequest();
+
+    // const record = client.items.create({
+    //     item_type: { type: "item_type", id: "123" },
+    //     content,
+    //     user,
+    // });
+
+    // const data = await client.items.list();
+
+    // get feeds
+    const data = await client.items.create({
+        item_type: { type: "item_type", id: "123" },
+        content,
+        user: JSON.stringify(user),
+    });
+
+    console.log("createFeed", data);
+
+    return data;
 };

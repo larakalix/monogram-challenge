@@ -1,16 +1,17 @@
+import { useSWRConfig } from "swr";
 import { Field, Form, Formik } from "formik";
 import { User } from "@components/generic";
 import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
 import { useUserStore } from "@store/userStore";
-
-type InputProps = {
-    feed: string;
-};
+import { InputProps } from "types/data/formField";
+import { useFeedInput } from "@hooks/feedInput/useFeedInput";
 
 const initialValues: InputProps = { feed: "" };
 
 export const FeedInput = () => {
     const { user } = useUserStore((state) => state);
+    const { mutate } = useSWRConfig();
+    const { onSubmit } = useFeedInput(user!);
 
     if (!user) return null;
 
@@ -30,20 +31,15 @@ export const FeedInput = () => {
                 enableReinitialize
                 validationSchema={feedtValidationSchema}
                 initialValues={initialValues}
-                onSubmit={(values, actions) => {
-                    console.log({ values, actions });
-                    alert(JSON.stringify(values, null, 2));
-                    actions.setSubmitting(false);
-                }}
+                onSubmit={onSubmit}
             >
                 <Form className="w-full ml-3 flex flex-col items-end">
                     <Field name="feed">
-                        {({ field, form, meta }: any) => {
+                        {({ field, meta }: any) => {
                             return (
                                 <textarea
                                     className="border border-input-border rounded-md min-h-[5.25rem] w-full bg-white py-2 px-3 mb-4"
-                                    // value={field.value}
-                                    // onChange={field.onChange}
+                                    {...field}
                                     placeholder="What’s on your mind..."
                                 />
                             );

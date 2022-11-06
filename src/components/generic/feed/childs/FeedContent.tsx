@@ -15,8 +15,6 @@ export const FeedContent = ({ content }: Props) => {
                 const isLink = isValidUrl(word);
                 const uri = word.split(/(?:https?|ftp):\/\/[\n\S]+/g);
 
-                console.log(word, uri.length);
-
                 if (isHashTag.test(word))
                     return <Hashtag key={word} tag={word} />;
                 else if (uri.length > 1) {
