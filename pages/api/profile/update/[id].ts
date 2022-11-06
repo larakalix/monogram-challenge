@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { clientRequest } from "../../../../lib/datocms";
+import { UpdateUser } from "@services/profileService";
 
 export default async function updateUser(
     req: NextApiRequest,
@@ -9,12 +9,7 @@ export default async function updateUser(
         const { id } = req.query;
         const { user } = JSON.parse(req.body);
 
-        const response = await clientRequest().items.update(String(id), {
-            name: user.name,
-            lastname: user.lastname,
-            email: user.email,
-            username: user.username,
-        });
+        const response = await UpdateUser(String(id), user);
 
         res.status(200).json({
             user: response,

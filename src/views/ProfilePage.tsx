@@ -5,9 +5,8 @@ import { FormField } from "types/data/formField";
 import { userValidationSchema } from "@validationSchemas/profileValidationSchema";
 import { ViewContentWrapper, UseFormField } from "@components/generic";
 import { useUserStore } from "@store/userStore";
-import { GenericUserProps, UserProps } from "types/data/user";
+import { GenericUserProps } from "types/data/user";
 import { useProfile } from "@hooks/profile/useProfile";
-import { API_CONSTANTS } from "@constants/api";
 
 const initialValues: Omit<GenericUserProps, "id"> = {
     name: "",
@@ -45,16 +44,16 @@ export const ProfilePage = () => {
                     actions.setSubmitting(false);
 
                     submit(values).then((res) => {
-                        if (res.ok)
+                        if (res.ok) {
                             toast.success("Profile updated", {
                                 icon: "👏",
                             });
-                        else toast.error("Something went wrong");
 
-                        setUser({
-                            ...user,
-                            ...values,
-                        });
+                            setUser({
+                                ...user,
+                                ...values,
+                            });
+                        } else toast.error("Something went wrong");
                     });
                 }}
             >

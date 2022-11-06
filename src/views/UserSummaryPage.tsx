@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useSWR from "swr";
 import { API_CONSTANTS } from "@constants/api";
 import { Loader, User, ViewContentWrapper } from "@components/generic";
