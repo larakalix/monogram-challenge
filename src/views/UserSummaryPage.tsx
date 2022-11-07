@@ -21,7 +21,7 @@ const fetcher = (url: string) =>
         });
 
 export const UserSummaryPage = ({ username }: Props) => {
-    const { user: currentUser } = useUserStore((state) => state);
+    const { user: currentUser, followings } = useUserStore((state) => state);
     const { data, error } = useSWR(
         `${API_CONSTANTS.profile}/${username}`,
         fetcher
@@ -30,6 +30,8 @@ export const UserSummaryPage = ({ username }: Props) => {
     if (!data) return <Loader />;
 
     const { user, feeds } = data;
+    const isSameUser = user.username === currentUser?.username;
+    const isFollowing = followings.includes(user.id);
 
     return (
         <ViewContentWrapper
@@ -42,10 +44,14 @@ export const UserSummaryPage = ({ username }: Props) => {
             <div className="flex flex-col">
                 <UserBadge user={user} />
 
-                <UserPanel user={user} />
+                <UserPanel
+                    user={user}
+                    isFollowing={isFollowing}
+                    isSameUser={isSameUser}
+                />
 
                 <div className="mt-4 pt-4 md:mt-8 md:pt-8 border-t border-main-gray-border">
-                    {user.username === currentUser?.username && <FeedInput />}
+                    {isSameUser && <FeedInput />}
                     <Feeds feeds={feeds} />
                 </div>
             </div>

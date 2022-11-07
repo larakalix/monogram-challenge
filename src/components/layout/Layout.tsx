@@ -55,7 +55,7 @@ export const Layout = () => {
 
             <small>
                 <Link
-                    href={`/`}
+                    href={`/home`}
                     passHref
                     className="text-main-blue text-[1.5rem] font-semibold"
                 >

@@ -23,11 +23,9 @@ export default async function follow(
 
         if (!isFollowing.follower) {
             const follow = await followUser(follower as string, user);
-            console.log("IS___Following___", follow);
             following = true;
         } else {
             const follow = await removeUserFollow(isFollowing.follower.id);
-            console.log("NOT___Following___", follow);
             following = false;
         }
 
