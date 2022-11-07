@@ -17,7 +17,6 @@ export const useFollowCard = () => {
         })
             .then((res) => res.json())
             .then(({ following }) => {
-                console.log("useFollowCard__follow", following);
                 handleState(following, false);
             });
     };

@@ -5,7 +5,7 @@ export const UserBadge = ({ user }: { user: UserProps }) => {
     return (
         <div
             style={{
-                backgroundColor: user.color?.hex,
+                backgroundColor: user.color?.hex && "#6a73c5",
             }}
             className="rounded-sm relative w-full flex min-h-[5rem]"
         >

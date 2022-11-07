@@ -42,7 +42,7 @@ export const UserSummaryPage = ({ username }: Props) => {
             splitType={ViewWrappperColSplitType.NotEquals}
         >
             <div className="flex flex-col">
-                <UserBadge user={user} />
+                <UserBadge user={currentUser!} />
 
                 <UserPanel
                     user={user}

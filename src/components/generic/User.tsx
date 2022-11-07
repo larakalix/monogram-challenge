@@ -6,10 +6,8 @@ interface Props extends UserProps {
 }
 
 export const User = ({
-    id,
     name,
     lastname,
-    email,
     username,
     thumbnail,
     onlyThumbnail = false,
