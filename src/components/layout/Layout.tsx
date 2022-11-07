@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Router from "next/router";
 import Link from "next/link";
 import clsx from "clsx";
+import { useOnClickOutside } from "usehooks-ts";
 import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
@@ -18,11 +19,18 @@ const links: NavItems[] = [
 export const Layout = () => {
     const [toogle, setToogle] = useState(false);
     const { user } = useUserStore((state) => state);
+    const ref = useRef(null);
+
+    const handleClickOutside = () => {
+        if (toogle) setToogle(false);
+    };
 
     const handleLogout = async () => {
         const isOut = await fetch(API_CONSTANTS.logout, { method: "POST" });
         if (isOut.status === 302) Router.push(APP_ROUTES.home);
     };
+
+    useOnClickOutside(ref, handleClickOutside);
 
     const styles = clsx({
         ["left-0"]: toogle,
@@ -31,6 +39,7 @@ export const Layout = () => {
 
     return (
         <div
+            ref={ref}
             className={`bg-sidebar min-h-[100vh] w-[15rem] max-w-[20rem] p-5 border-r border-main-gray-border absolute md:fixed ${styles} md:left-0 transition-all z-10`}
         >
             <button

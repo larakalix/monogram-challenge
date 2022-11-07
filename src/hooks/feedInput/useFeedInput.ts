@@ -16,11 +16,9 @@ export const useFeedInput = (user: UserProps) => {
             user,
         };
 
-        console.log("onSubmit", { feed });
-
         fetch(API_CONSTANTS.newFeed, {
             method: "POST",
-            body: JSON.stringify({ feed }),
+            body: JSON.stringify({ feed, user }),
         });
     };
 

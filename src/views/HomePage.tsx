@@ -15,7 +15,10 @@ const fetcher = (url: string) =>
 export const HomePage = () => {
     const { data, error } = useSWR<{ feeds: FeedProps[] }>(
         API_CONSTANTS.feeds,
-        fetcher
+        fetcher,
+        {
+            revalidateOnFocus: true,
+        }
     );
 
     if (!data) return <Loader />;

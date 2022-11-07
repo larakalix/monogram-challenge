@@ -1,6 +1,9 @@
+import { ApiError } from "@datocms/cma-client-node";
 import { clientRequest, request } from "./../../lib/datocms";
 import { FeedProps } from "types/data/feed";
 import { FeedQueryType } from "types/services/feed";
+import { UserProps } from "types/data/user";
+import { SCHEMA_TYPES } from "@constants/schemaTypes";
 
 const FEED_QUERY = `query Feeds ($limit: IntType) {
     allFeeds(first: $limit, orderBy: _createdAt_DESC) {
@@ -64,25 +67,29 @@ export const getFeeds = async (
     return allFeeds;
 };
 
-export const createFeed = async ({ content, user }: FeedProps) => {
-    const client = await clientRequest();
+export const createFeed = async (content: string, user: UserProps) => {
+    try {
+        const client = await clientRequest();
 
-    // const record = client.items.create({
-    //     item_type: { type: "item_type", id: "123" },
-    //     content,
-    //     user,
-    // });
+        // console.log("CLIENT__", { id: user.id });
 
-    // const data = await client.items.list();
+        const data = await client.items.create({
+            item_type: { id: SCHEMA_TYPES.FEED, type: "item_type" },
+            meta: {
+                status: "published",
+            },
+            content: {
+                en: content,
+            },
+            user: user.id,
+        });
 
-    // get feeds
-    const data = await client.items.create({
-        item_type: { type: "item_type", id: "123" },
-        content,
-        user: JSON.stringify(user),
-    });
-
-    console.log("createFeed", data);
-
-    return data;
+        return null;
+    } catch (e) {
+        if (e instanceof ApiError) {
+            console.log("ERROR__", e);
+        } else {
+            throw e;
+        }
+    }
 };
