@@ -16,6 +16,13 @@ export default async function user(
             UserQueryType.ONE_USER
         );
 
+        if (!user.thumbnail) {
+            user.thumbnail = {
+                basename: user.username,
+                url: `https://api.multiavatar.com/${user.username}.png`,
+            };
+        }
+
         if (user) {
             const followers = await getFollowersByUser(user.id);
             user.followers = followers;

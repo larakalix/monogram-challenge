@@ -17,7 +17,7 @@ const nextConfig = {
         AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
     },
     images: {
-        domains: ["www.datocms-assets.com"],
+        domains: ["www.datocms-assets.com", "api.multiavatar.com"],
     },
 };
 
