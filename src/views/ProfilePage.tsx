@@ -23,7 +23,7 @@ const formFields: FormField[] = [
 ];
 
 export const ProfilePage = () => {
-    const { user, setUser } = useUserStore((state) => state);
+    const { user, followings, setUser } = useUserStore((state) => state);
     const { submit } = useProfile(user!);
 
     if (!user) return null;
@@ -49,10 +49,13 @@ export const ProfilePage = () => {
                                 icon: "👏",
                             });
 
-                            setUser({
-                                ...user,
-                                ...values,
-                            });
+                            setUser(
+                                {
+                                    ...user,
+                                    ...values,
+                                },
+                                followings
+                            );
                         } else toast.error("Something went wrong");
                     });
                 }}
