@@ -3,6 +3,7 @@ import Router from "next/router";
 import useSWR from "swr";
 import { useUserStore } from "@store/userStore";
 import { API_CONSTANTS } from "@constants/api";
+import { FollowerProps } from "types/data/follower";
 
 type Props = { children: JSX.Element | JSX.Element[] };
 
@@ -22,11 +23,14 @@ export const AuthGuard = ({ children }: Props) => {
     useEffect(() => {
         if (!finished) return;
 
-        if (!hasUser || error) {
+        if (!hasUser || !!error) {
             Router.push("/");
             return;
         } else {
-            setUser(data?.user);
+            const followings = data?.user?.followers.map(
+                ({ follower }: { follower: FollowerProps }) => follower.id
+            );
+            setUser(data?.user, followings);
 
             if (["/"].includes(Router.asPath)) Router.push("/home");
         }

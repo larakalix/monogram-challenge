@@ -71,9 +71,7 @@ export const createFeed = async (content: string, user: UserProps) => {
     try {
         const client = await clientRequest();
 
-        // console.log("CLIENT__", { id: user.id });
-
-        const data = await client.items.create({
+        const feed = await client.items.create({
             item_type: { id: SCHEMA_TYPES.FEED, type: "item_type" },
             meta: {
                 status: "published",
@@ -84,7 +82,7 @@ export const createFeed = async (content: string, user: UserProps) => {
             user: user.id,
         });
 
-        return null;
+        return feed;
     } catch (e) {
         if (e instanceof ApiError) {
             console.log("ERROR__", e);

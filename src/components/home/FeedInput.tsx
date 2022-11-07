@@ -51,16 +51,16 @@ export const FeedInput = ({ refreshFeeds }: Props) => {
 
                             return (
                                 <>
-                                    <span
-                                        className={`${styles} font-normal text-[0.7rem] leading-[1.25rem]`}
-                                    >
-                                        {field.value.length} / 280
-                                    </span>
                                     <textarea
-                                        className="border border-input-border rounded-md min-h-[5.25rem] max-h-[14rem] w-full bg-white py-2 px-3 mb-2"
+                                        className="border border-input-border rounded-md min-h-[5.25rem] max-h-[14rem] w-full bg-white py-2 px-3"
                                         {...field}
                                         placeholder="What’s on your mind..."
                                     />
+                                    <span
+                                        className={`${styles} font-normal text-[0.7rem] leading-[1.25rem] mb-2`}
+                                    >
+                                        {field.value.length} / 280
+                                    </span>
                                     {meta.touched && meta.error && (
                                         <div className="text-red-500 text-[0.8rem] mb-4">
                                             {meta.error}

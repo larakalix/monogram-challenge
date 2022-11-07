@@ -1,6 +1,9 @@
+import { ApiError } from "@datocms/cma-client-node";
 import { request } from "./../../lib/datocms";
+import { clientRequest } from "../../lib/datocms";
 import { UserProps } from "types/data/user";
 import { UserQueryType } from "types/services/user";
+import { SCHEMA_TYPES } from "@constants/schemaTypes";
 
 const ONE_USER_QUERY = `query User ($authreference: String) {
   user (filter: {authreference: {eq: $authreference}}) {
@@ -21,21 +24,6 @@ const ONE_USER_QUERY = `query User ($authreference: String) {
     thumbnail {
       basename
       url
-    }
-    followers {
-      authreference
-      follower {
-        username
-        thumbnail {
-          basename
-          url
-        }
-        name
-        lastname
-        id
-        email
-        authreference
-      }
     }
   }
 }`;
@@ -65,12 +53,29 @@ const ONE_USER_SUMMARY_QUERY = `query User ($username: String) {
       follower {
         id
         name
+        username
         lastname
         thumbnail {
           basename
           url
         }
       }
+    }
+  }
+}`;
+
+const SUGGESTIONS_QUERY = `query Suggestions($limit: IntType, $offset: [ItemId]) {
+  allUsers(first: $limit, filter: {id: {notIn: $offset }}) {
+    id
+    authreference
+    name
+    lastname
+    email
+    createdAt
+    username
+    thumbnail {
+      basename
+      url
     }
   }
 }`;
@@ -103,4 +108,42 @@ export const getUser = async (
     });
 
     return user;
+};
+
+export const getSuggestions = async (
+    limit: number,
+    offset: string
+): Promise<UserProps[]> => {
+    const { allUsers } = await request({
+        query: SUGGESTIONS_QUERY,
+        variables: { limit, offset },
+        preview: false,
+    });
+
+    return allUsers;
+};
+
+export const updateUserFollows = async (
+    user: UserProps,
+    followings: string[]
+) => {
+    try {
+        const client = await clientRequest();
+
+        const follow = await client.items.update(String(user?.id), {
+            item_type: { id: SCHEMA_TYPES.USER, type: "item_type" },
+            meta: {
+                status: "published",
+            },
+            followers: [...(followings as string[])],
+        });
+
+        return follow;
+    } catch (e) {
+        if (e instanceof ApiError) {
+            console.log("ERROR__", e);
+        } else {
+            throw e;
+        }
+    }
 };

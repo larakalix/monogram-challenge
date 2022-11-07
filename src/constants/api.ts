@@ -6,4 +6,6 @@ export const API_CONSTANTS = {
     profile: "/api/profile",
     newFeed: "/api/feed/new",
     updateUser: "/api/profile/update",
+    suggestions: "/api/suggestions",
+    follow: "/api/follow",
 };

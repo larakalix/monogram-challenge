@@ -1,4 +1,6 @@
-import { User } from "@components/generic";
+import { FollowCard, User } from "@components/generic";
+import { useUserStore } from "@store/userStore";
+import clsx from "clsx";
 import { FollowerProps } from "types/data/follower";
 
 type Props = {
@@ -6,40 +8,22 @@ type Props = {
 };
 
 export const Followed = ({ followed }: Props) => {
-    console.log("followed", followed);
-    const follow = (user: string) => {
-        console.log(`Following @${user}`);
-    };
+    const { followings } = useUserStore((state) => state);
+
+    if (!followed) return null;
 
     return (
         <>
             {followed.map(({ follower }) => {
                 if (!follower) return null;
 
-                const { id, name, lastname, email, username, thumbnail } =
-                    follower;
-
+                const isFollowing = followings?.includes(follower.id);
                 return (
-                    <div
+                    <FollowCard
                         key={follower?.username}
-                        className="w-full flex justify-between items-center pt-4 pb-6 px-0 border-t border-main-gray-border"
-                    >
-                        <User
-                            id={id}
-                            name={name}
-                            lastname={lastname}
-                            email={email}
-                            username={username}
-                            thumbnail={thumbnail}
-                        />
-
-                        <button
-                            className="border border-input-border rounded-full py-1 px-3 text-label-gray font-medium text-[0.875rem]"
-                            onClick={() => follow(username)}
-                        >
-                            Unfollow
-                        </button>
-                    </div>
+                        follower={follower}
+                        isFollowing={isFollowing}
+                    />
                 );
             })}
         </>

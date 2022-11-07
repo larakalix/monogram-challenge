@@ -1,8 +1,10 @@
+import Router from "next/router";
+import Link from "next/link";
 import { format, formatDistance } from "date-fns";
 import { User } from "@components/generic";
 import { FeedProps } from "types/data/feed";
-import Link from "next/link";
 import { FeedContent } from "./FeedContent";
+import { RedirectTo } from "./RedirectTo";
 
 export const Feed = ({ user, content, createdAt }: Omit<FeedProps, "id">) => {
     const getDistanceFromNow = () => {
@@ -10,9 +12,12 @@ export const Feed = ({ user, content, createdAt }: Omit<FeedProps, "id">) => {
 
         return `${date.charAt(0).toUpperCase()}${date.slice(1)}`;
     };
+
+    const redirectTo = Router.asPath.replace("/", "") === `${user.username}`;
+
     return (
         <div className="flex items-start w-full mb-10">
-            <Link href={`/${user.username}`}>
+            <RedirectTo username={user.username} redirectTo={redirectTo}>
                 <User
                     id={user.id}
                     name={user.name}
@@ -22,10 +27,10 @@ export const Feed = ({ user, content, createdAt }: Omit<FeedProps, "id">) => {
                     thumbnail={user.thumbnail}
                     onlyThumbnail
                 />
-            </Link>
+            </RedirectTo>
 
             <div className="w-full ml-3 flex flex-col">
-                <Link href={`/${user.username}`}>
+                <RedirectTo username={user.username} redirectTo={redirectTo}>
                     <h3 className="text-main-black font-medium text-[0.875rem] leading-[1.25rem] space-x-2">
                         <span>{user.name}</span>
                         <span className="text-sub-label-gray font-normal text-[0.875rem] leading-[1.25rem]">
@@ -36,7 +41,7 @@ export const Feed = ({ user, content, createdAt }: Omit<FeedProps, "id">) => {
                             {getDistanceFromNow()}
                         </span>
                     </h3>
-                </Link>
+                </RedirectTo>
 
                 <FeedContent content={content} />
             </div>

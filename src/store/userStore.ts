@@ -8,8 +8,10 @@ interface Props extends UserProps {
 
 interface UserState {
     user: Props | null;
+    followings: string[];
     isAuthenticated: boolean;
-    setUser: (user: Props) => void;
+    setUser: (user: Props, followings: string[]) => void;
+    setFollowings: (followings: string[]) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -17,12 +19,20 @@ export const useUserStore = create<UserState>()(
         persist(
             (set) => ({
                 user: null,
+                followings: [],
                 isAuthenticated: false,
-                setUser: (user) => {
+                setUser: (user, followings) => {
                     set((state) => ({
                         ...state,
                         user,
+                        followings,
                         isAuthenticated: true,
+                    }));
+                },
+                setFollowings: (followings: string[]) => {
+                    set((state) => ({
+                        ...state,
+                        followings,
                     }));
                 },
             }),

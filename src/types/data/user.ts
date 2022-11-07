@@ -20,6 +20,7 @@ export interface UserProps
     extends PersonalUserProps,
         AuthProps,
         IGenericWithTimestamps {
+    authreference?: string;
     thumbnail: ThumbnailProps;
     followers?: FollowerProps[];
     issuer?: string;

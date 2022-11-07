@@ -7,7 +7,12 @@ export default async function feeds(
     req: NextApiRequest,
     res: NextApiResponse<{ feeds: FeedProps[] }>
 ) {
-    const feeds = await getFeeds("", FeedQueryType.ALL_FEEDS);
+    try {
+        const feeds = await getFeeds("", FeedQueryType.ALL_FEEDS);
 
-    res.status(200).json({ feeds });
+        res.status(200).json({ feeds });
+    } catch (error: any) {
+        console.log(error);
+        res.status(500).end(error.message);
+    }
 }
