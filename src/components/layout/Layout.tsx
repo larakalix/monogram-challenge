@@ -81,14 +81,16 @@ export const Layout = () => {
             </nav>
 
             {user && (
-                <User
-                    id={user.id}
-                    name={user.name}
-                    lastname={user.lastname}
-                    email={user.email}
-                    username={user.username}
-                    thumbnail={user.thumbnail}
-                />
+                <Link href={`/${user.username}`} passHref>
+                    <User
+                        id={user.id}
+                        name={user.name}
+                        lastname={user.lastname}
+                        email={user.email}
+                        username={user.username}
+                        thumbnail={user.thumbnail}
+                    />
+                </Link>
             )}
         </div>
     );
