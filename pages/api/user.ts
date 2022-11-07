@@ -17,8 +17,8 @@ export default async function user(
         );
 
         if (user) {
-            // const followers = await getFollowersByUser(user.id);
-            user.followers = []];
+            const followers = await getFollowersByUser(user.id);
+            user.followers = followers;
             console.log("EXISTS_USER___");
         } else {
             // user = (await createUser(payload)) as UserProps;
