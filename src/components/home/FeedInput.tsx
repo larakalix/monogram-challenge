@@ -5,6 +5,7 @@ import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
 import { useUserStore } from "@store/userStore";
 import { InputProps } from "types/data/formField";
 import { useFeedInput } from "@hooks/feedInput/useFeedInput";
+import { Advice } from "./advice/Advice";
 
 type Props = {
     refreshFeeds?: () => void;
@@ -20,6 +21,7 @@ export const FeedInput = ({ refreshFeeds }: Props) => {
 
     return (
         <>
+            {user.isnew && <Advice email={user.email} />}
             <div className="flex items-start w-full mb-10">
                 <User
                     id={user.id}

@@ -44,7 +44,7 @@ export const FollowCard = ({ follower, isFollowing }: Props) => {
             </Link>
 
             <button
-                className={`border border-input-border rounded-full py-1 px-3 ${styles} font-medium text-[0.875rem] min-w-[6rem] disabled:opacity-25`}
+                className={`border border-input-border rounded-md py-1 px-3 ${styles} font-medium text-[0.875rem] min-w-[6rem] disabled:opacity-25`}
                 disabled={state.isLoading}
                 onClick={() =>
                     handleClick({
