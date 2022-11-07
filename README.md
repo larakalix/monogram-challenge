@@ -1,9 +1,3 @@
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="public/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
 <h1 align="center">
   <br>
   <a href="https://mweeter-challenge.vercel.app/"><img src="public/logo.png" alt="Markdownify" width="200"></a>
