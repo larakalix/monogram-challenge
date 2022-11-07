@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Field, Form, Formik } from "formik";
 import clsx from "clsx";
 import { User } from "@components/generic";
@@ -23,15 +24,17 @@ export const FeedInput = ({ refreshFeeds }: Props) => {
         <>
             {user.isnew && <Advice email={user.email} />}
             <div className="flex items-start w-full mb-10">
-                <User
-                    id={user.id}
-                    name={user.name}
-                    lastname={user.lastname}
-                    email={user.email}
-                    username={user.username}
-                    thumbnail={user.thumbnail}
-                    onlyThumbnail
-                />
+                <Link href={`/${user.username}`} passHref>
+                    <User
+                        id={user.id}
+                        name={user.name}
+                        lastname={user.lastname}
+                        email={user.email}
+                        username={user.username}
+                        thumbnail={user.thumbnail}
+                        onlyThumbnail
+                    />
+                </Link>
 
                 <Formik
                     enableReinitialize
