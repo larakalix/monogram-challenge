@@ -22,6 +22,7 @@ export interface UserProps
         IGenericWithTimestamps {
     authreference?: string;
     thumbnail: ThumbnailProps;
+    isnew?: boolean;
     followers?: FollowerProps[];
     issuer?: string;
     color?: Partial<ColorProps>;

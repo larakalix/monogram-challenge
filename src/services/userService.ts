@@ -13,7 +13,7 @@ const ONE_USER_QUERY = `query User ($authreference: String) {
     email
     createdAt
     username
-    isNew
+    isnew
     authreference
     color {
       hex
