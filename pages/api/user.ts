@@ -19,10 +19,8 @@ export default async function user(
         if (user) {
             const followers = await getFollowersByUser(user.id);
             user.followers = followers;
-            console.log("EXISTS_USER___");
         } else {
-            // user = (await createUser(payload)) as UserProps;
-            console.log("CREATED_USER___");
+            user = (await createUser(payload)) as UserProps;
         }
 
         res.status(200).json({ user: { ...user, issuer: payload?.nickname } });

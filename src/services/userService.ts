@@ -13,6 +13,7 @@ const ONE_USER_QUERY = `query User ($authreference: String) {
     email
     createdAt
     username
+    isNew
     authreference
     color {
       hex
@@ -123,6 +124,7 @@ export const createUser = async (payload: any) => {
             username: payload.nickname,
             email: payload.email,
             authreference: payload.nickname,
+            isNew: true,
         });
 
         return {
