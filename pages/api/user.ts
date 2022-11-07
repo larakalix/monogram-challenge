@@ -1,22 +1,33 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getUser } from "@services/userService";
-import { UserProps } from "types/data/user";
-import { getLoginSession } from "../../lib/auth";
-import { UserQueryType } from "types/services/user";
+import { getUser, createUser } from "@services/userService";
 import { getFollowersByUser } from "@services/followedService";
+import { UserProps } from "types/data/user";
+import { UserQueryType } from "types/services/user";
 
 export default async function user(
     req: NextApiRequest,
     res: NextApiResponse<{ user: UserProps }>
 ) {
-    const { issuer } = await getLoginSession(req);
-    let user = await getUser(String(issuer), UserQueryType.ONE_USER);
+    try {
+        const payload = JSON.parse(req.body);
 
-    if (user) {
-        const followers = await getFollowersByUser(user.id);
+        let user = await getUser(
+            String(payload?.nickname),
+            UserQueryType.ONE_USER
+        );
 
-        user.followers = followers;
+        if (user) {
+            // const followers = await getFollowersByUser(user.id);
+            user.followers = []];
+            console.log("EXISTS_USER___");
+        } else {
+            // user = (await createUser(payload)) as UserProps;
+            console.log("CREATED_USER___");
+        }
+
+        res.status(200).json({ user: { ...user, issuer: payload?.nickname } });
+    } catch (error: any) {
+        console.log(error);
+        res.status(500).end(error.message);
     }
-
-    res.status(200).json({ user: { ...user, issuer } });
 }

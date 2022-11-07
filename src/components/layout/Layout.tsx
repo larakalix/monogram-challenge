@@ -1,14 +1,11 @@
 import { useState, useRef } from "react";
-import Router from "next/router";
 import Link from "next/link";
 import clsx from "clsx";
 import { useOnClickOutside } from "usehooks-ts";
 import { CgMenuLeft, CgClose } from "react-icons/cg";
 import { User } from "@components/generic";
 import { NavItems } from "types/layout/layout";
-import { API_CONSTANTS } from "@constants/api";
 import { useUserStore } from "@store/userStore";
-import { APP_ROUTES } from "@constants/routes";
 
 const links: NavItems[] = [
     { label: "Home", route: "/home" },
@@ -23,11 +20,6 @@ export const Layout = () => {
 
     const handleClickOutside = () => {
         if (toogle) setToogle(false);
-    };
-
-    const handleLogout = async () => {
-        const isOut = await fetch(API_CONSTANTS.logout, { method: "POST" });
-        if (isOut.status === 302) Router.push(APP_ROUTES.home);
     };
 
     useOnClickOutside(ref, handleClickOutside);
@@ -77,12 +69,13 @@ export const Layout = () => {
                         </li>
                     ))}
                     <li key={`logout-nav-item`}>
-                        <button
+                        <Link
+                            href="/api/auth/logout"
+                            passHref
                             className="bg-transparent text-link-gray text-[0.875rem] font-medium leading-[1.25rem] hover:bg-label-gray-active block w-full p-2 rounded-md text-start"
-                            onClick={() => handleLogout()}
                         >
                             Log out
-                        </button>
+                        </Link>
                     </li>
                 </ol>
             </nav>

@@ -110,6 +110,40 @@ export const getUser = async (
     return user;
 };
 
+export const createUser = async (payload: any) => {
+    try {
+        const client = await clientRequest();
+        const user = await client.items.create({
+            item_type: { id: SCHEMA_TYPES.USER, type: "item_type" },
+            meta: {
+                status: "published",
+            },
+            name: `${payload.nickname} user`,
+            lastname: payload.email,
+            username: payload.nickname,
+            email: payload.email,
+            authreference: payload.nickname,
+        });
+
+        return {
+            id: user.id,
+            name: user.name,
+            lastname: user.lastname,
+            email: user.email,
+            createdAt: user.createdAt,
+            username: user.username,
+            authreference: user.authreference,
+            issuer: user.authreference,
+        } as UserProps;
+    } catch (e) {
+        if (e instanceof ApiError) {
+            console.log("ERROR__", e);
+        } else {
+            throw e;
+        }
+    }
+};
+
 export const getSuggestions = async (
     limit: number,
     offset: string
