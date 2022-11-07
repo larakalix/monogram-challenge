@@ -21,15 +21,15 @@ export default async function follow(
 
         let following = false;
 
-        // if (!isFollowing.follower) {
-        //     const follow = await followUser(follower as string, user);
-        //     console.log("IS___Following___", follow);
-        //     following = true;
-        // } else {
-        //     const follow = await removeUserFollow(isFollowing.follower.id);
-        //     console.log("NOT___Following___", follow);
-        //     following = false;
-        // }
+        if (!isFollowing.follower) {
+            const follow = await followUser(follower as string, user);
+            console.log("IS___Following___", follow);
+            following = true;
+        } else {
+            const follow = await removeUserFollow(isFollowing.follower.id);
+            console.log("NOT___Following___", follow);
+            following = false;
+        }
 
         res.status(200).json({ following: following });
     } catch (error: any) {
