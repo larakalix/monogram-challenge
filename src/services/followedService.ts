@@ -71,8 +71,7 @@ const FOLLOW_QUERY = `query Follow($follower: ItemId, $user: ItemId) {
       id
     }
   }
-}
-`;
+}`;
 
 export const fetcher = (authreference: string) =>
     request({
