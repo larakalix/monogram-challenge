@@ -1,16 +1,20 @@
-import { useSWRConfig } from "swr";
+import { useState } from "react";
 import { Field, Form, Formik } from "formik";
+import clsx from "clsx";
 import { User } from "@components/generic";
 import { feedtValidationSchema } from "@validationSchemas/mweetSchemas";
 import { useUserStore } from "@store/userStore";
 import { InputProps } from "types/data/formField";
 import { useFeedInput } from "@hooks/feedInput/useFeedInput";
 
+type Props = {
+    refreshFeeds?: () => void;
+};
+
 const initialValues: InputProps = { feed: "" };
 
-export const FeedInput = () => {
+export const FeedInput = ({ refreshFeeds }: Props) => {
     const { user } = useUserStore((state) => state);
-    const { mutate } = useSWRConfig();
     const { onSubmit } = useFeedInput(user!);
 
     if (!user) return null;
@@ -31,17 +35,38 @@ export const FeedInput = () => {
                 enableReinitialize
                 validationSchema={feedtValidationSchema}
                 initialValues={initialValues}
-                onSubmit={onSubmit}
+                onSubmit={(values, actions) => {
+                    onSubmit(values, actions, refreshFeeds!);
+                }}
             >
                 <Form className="w-full ml-3 flex flex-col items-end">
                     <Field name="feed">
                         {({ field, meta }: any) => {
+                            const styles = clsx({
+                                ["text-red-500"]: meta.touched && meta.error,
+                                ["text-sub-label-gray"]: !(
+                                    meta.touched && meta.error
+                                ),
+                            });
+
                             return (
-                                <textarea
-                                    className="border border-input-border rounded-md min-h-[5.25rem] w-full bg-white py-2 px-3 mb-4"
-                                    {...field}
-                                    placeholder="What’s on your mind..."
-                                />
+                                <>
+                                    <span
+                                        className={`${styles} font-normal text-[0.7rem] leading-[1.25rem]`}
+                                    >
+                                        {field.value.length} / 280
+                                    </span>
+                                    <textarea
+                                        className="border border-input-border rounded-md min-h-[5.25rem] max-h-[14rem] w-full bg-white py-2 px-3 mb-2"
+                                        {...field}
+                                        placeholder="What’s on your mind..."
+                                    />
+                                    {meta.touched && meta.error && (
+                                        <div className="text-red-500 text-[0.8rem] mb-4">
+                                            {meta.error}
+                                        </div>
+                                    )}
+                                </>
                             );
                         }}
                     </Field>

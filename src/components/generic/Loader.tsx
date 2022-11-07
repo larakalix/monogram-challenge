@@ -1,6 +1,15 @@
-export const Loader = () => {
+import clsx from "clsx";
+
+export const Loader = ({ cover = true }: { cover?: boolean }) => {
+    const styles = clsx({
+        ["h-screen"]: cover,
+        ["h-[100%]"]: !cover,
+    });
+
     return (
-        <section className="flex items-center justify-center flex-col h-screen">
+        <section
+            className={`flex items-center justify-center flex-col ${styles}`}
+        >
             <div role="status">
                 <svg
                     aria-hidden="true"

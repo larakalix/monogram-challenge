@@ -1,8 +1,12 @@
 import useSWR from "swr";
 import { API_CONSTANTS } from "@constants/api";
-import { Loader, User, ViewContentWrapper } from "@components/generic";
+import { Loader, ViewContentWrapper } from "@components/generic";
 import { FeedInput, Feeds } from "@components/home";
 import { kFormatter } from "helpers/string";
+import { UserBadge, UserPanel } from "@components/summary";
+import { ViewWrappperColSplitType } from "types/generic/generic";
+import { FollowerProps } from "types/data/follower";
+import { Followed } from "@components/follow";
 
 type Props = {
     username: string | string[];
@@ -31,46 +35,21 @@ export const UserSummaryPage = ({ username }: Props) => {
             subtitle={`${kFormatter(feeds.length)} ${
                 feeds.length === 1 ? "Mweet" : "Mweets"
             }`}
+            splitType={ViewWrappperColSplitType.NotEquals}
         >
             <div className="flex flex-col">
-                <div
-                    style={{
-                        backgroundColor: user.color.hex,
-                    }}
-                    className="rounded-sm relative w-full flex min-h-[5rem]"
-                >
-                    <div className="absolute bottom-[-1rem] left-[1rem]">
-                        <User
-                            id={user.id}
-                            name={user.name}
-                            lastname={user.lastname}
-                            username={user.username}
-                            thumbnail={user.thumbnail}
-                            email={user.email}
-                            onlyThumbnail
-                        />
-                    </div>
-                </div>
+                <UserBadge user={user} />
 
-                <div className="flex flex-col items-start justify-center w-full mt-8">
-                    <h1 className="text-label-gray font-medium text-[1.5rem] leading-[1.25rem]">
-                        {user.name} {user.lastname}
-                    </h1>
-
-                    <ul className="space-x-4 mt-4">
-                        <li className="text-sub-label-gray">
-                            <span className="font-bold text-label-gray">
-                                {user.followers.length}
-                            </span>{" "}
-                            Followers
-                        </li>
-                    </ul>
-                </div>
+                <UserPanel user={user} />
 
                 <div className="mt-4 pt-4 md:mt-8 md:pt-8 border-t border-main-gray-border">
                     <FeedInput />
                     <Feeds feeds={feeds} />
                 </div>
+            </div>
+
+            <div className="flex flex-col">
+                <Followed followed={user.followers as FollowerProps[]} />
             </div>
         </ViewContentWrapper>
     );

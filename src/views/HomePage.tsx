@@ -1,9 +1,10 @@
-import useSWR from "swr";
-import { Loader, ViewContentWrapper } from "@components/generic";
-import { FeedInput, Feeds, Suggestions } from "@components/home";
+import useSWR, { useSWRConfig } from "swr";
+import { ViewContentWrapper } from "@components/generic";
+import { FeedInput, Suggestions } from "@components/home";
 import { FeedProps } from "types/data/feed";
 import { ViewWrappperColSplitType } from "types/generic/generic";
 import { API_CONSTANTS } from "@constants/api";
+import { HomeFeeds } from "@components/home/homeFeeds/HomeFeeds";
 
 const fetcher = (url: string) =>
     fetch(url)
@@ -13,6 +14,7 @@ const fetcher = (url: string) =>
         });
 
 export const HomePage = () => {
+    const { mutate } = useSWRConfig();
     const { data, error } = useSWR<{ feeds: FeedProps[] }>(
         API_CONSTANTS.feeds,
         fetcher,
@@ -21,9 +23,9 @@ export const HomePage = () => {
         }
     );
 
-    if (!data) return <Loader />;
-
-    const { feeds } = data;
+    const refreshFeeds = () => {
+        mutate(API_CONSTANTS.feeds);
+    };
 
     return (
         <ViewContentWrapper
@@ -31,9 +33,9 @@ export const HomePage = () => {
             splitType={ViewWrappperColSplitType.NotEquals}
         >
             <div className="flex flex-col pr-0 lg:pr-20">
-                <FeedInput />
+                <FeedInput refreshFeeds={refreshFeeds} />
 
-                <Feeds feeds={feeds} />
+                <HomeFeeds data={data} />
             </div>
 
             <div className="flex flex-col">

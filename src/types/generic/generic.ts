@@ -23,4 +23,5 @@ export enum HeadingType {
 export enum ViewWrappperColSplitType {
     Equals,
     NotEquals,
+    One,
 }

@@ -36,6 +36,19 @@ const FOLLOWED_QUERY = `query Followed ($authreference: String)  {
   }
 }`;
 
+const FOLLOWERS_BY_USER_QUERY = `query getFollowersByUser ($id: ItemId)  {
+  allFollowers(filter: {user: {in: $id}}) {
+    id
+    authreference
+    user {
+      id
+    }
+    follower {
+      id
+    }
+  }
+}`;
+
 export const fetcher = (authreference: string) =>
     request({
         query: FOLLOWED_QUERY,
@@ -53,4 +66,14 @@ export const getFolloweds = async (
     });
 
     return allFeeds;
+};
+
+export const getFollowersByUser = async (id: string) => {
+    const { allFollowers } = await request({
+        query: FOLLOWERS_BY_USER_QUERY,
+        variables: { id },
+        preview: false,
+    });
+
+    return allFollowers;
 };

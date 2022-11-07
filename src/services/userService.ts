@@ -62,6 +62,15 @@ const ONE_USER_SUMMARY_QUERY = `query User ($username: String) {
     }
     followers {
       id
+      follower {
+        id
+        name
+        lastname
+        thumbnail {
+          basename
+          url
+        }
+      }
     }
   }
 }`;

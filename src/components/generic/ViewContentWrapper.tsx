@@ -19,6 +19,7 @@ export const ViewContentWrapper = ({
     const isAuthenticated = useUserStore((state) => state.isAuthenticated);
 
     const styles = clsx({
+        ["lg:grid-cols-1"]: splitType === ViewWrappperColSplitType.One,
         ["lg:grid-cols-2"]: splitType === ViewWrappperColSplitType.Equals,
         ["lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[minmax(0,1fr)_340px]"]:
             splitType === ViewWrappperColSplitType.NotEquals,

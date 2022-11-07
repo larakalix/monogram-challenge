@@ -6,6 +6,7 @@ type Props = {
 };
 
 export const Followed = ({ followed }: Props) => {
+    console.log("followed", followed);
     const follow = (user: string) => {
         console.log(`Following @${user}`);
     };
