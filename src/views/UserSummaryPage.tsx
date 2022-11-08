@@ -1,48 +1,48 @@
-import useSWR from "swr";
-import { API_CONSTANTS } from "@constants/api";
-import { Loader, ViewContentWrapper } from "@components/generic";
-import { FeedInput, Feeds } from "@components/home";
-import { UserBadge, UserPanel } from "@components/summary";
-import { ViewWrappperColSplitType } from "types/generic/generic";
-import { FollowerProps } from "types/data/follower";
-import { Followed } from "@components/follow";
-import { useUserStore } from "@store/userStore";
-import { kFormatter } from "helpers/string";
+import useSWR from 'swr'
+import { API_CONSTANTS } from '@constants/api'
+import { Loader, ViewContentWrapper } from '@components/generic'
+import { FeedInput, Feeds } from '@components/home'
+import { UserBadge, UserPanel } from '@components/summary'
+import { ViewWrappperColSplitType } from 'types/generic/generic'
+import { FollowerProps } from 'types/data/follower'
+import { Followed } from '@components/follow'
+import { useUserStore } from '@store/userStore'
+import { kFormatter } from 'helpers/string'
 
 type Props = {
-    username: string | string[];
-};
+    username: string | string[]
+}
 
 const fetcher = (url: string) =>
     fetch(url)
         .then((res) => res.json())
         .then((data) => {
-            return { user: data?.user, feeds: data?.feeds };
-        });
+            return { user: data?.user, feeds: data?.feeds }
+        })
 
 export const UserSummaryPage = ({ username }: Props) => {
-    const { user: currentUser, followings } = useUserStore((state) => state);
+    const { user: currentUser, followings } = useUserStore((state) => state)
     const { data, error } = useSWR(
         `${API_CONSTANTS.profile}/${username}`,
         fetcher
-    );
+    )
 
-    if (!data) return <Loader />;
+    if (!data) return <Loader />
 
-    const { user, feeds } = data;
-    const isSameUser = user.username === currentUser?.username;
-    const isFollowing = followings.includes(user.id);
+    const { user, feeds } = data
+    const isSameUser = user.username === currentUser?.username
+    const isFollowing = followings.includes(user.id)
 
     return (
         <ViewContentWrapper
             title={`${user.username}`}
             subtitle={`${kFormatter(feeds.length)} ${
-                feeds.length === 1 ? "Mweet" : "Mweets"
+                feeds.length === 1 ? 'Mweet' : 'Mweets'
             }`}
             splitType={ViewWrappperColSplitType.NotEquals}
         >
             <div className="flex flex-col">
-                <UserBadge user={currentUser!} />
+                <UserBadge user={user!} />
 
                 <UserPanel
                     user={user}
@@ -60,5 +60,5 @@ export const UserSummaryPage = ({ username }: Props) => {
                 <Followed followed={user.followers as FollowerProps[]} />
             </div>
         </ViewContentWrapper>
-    );
-};
+    )
+}

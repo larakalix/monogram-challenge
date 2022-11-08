@@ -4,6 +4,7 @@ import { clientRequest } from '../../lib/datocms'
 import { UserProps } from 'types/data/user'
 import { UserQueryType } from 'types/services/user'
 import { SCHEMA_TYPES } from '@constants/schemaTypes'
+import { FollowerProps } from 'types/data/follower'
 
 const ONE_USER_QUERY = `query User ($authreference: String) {
   user (filter: {authreference: {eq: $authreference}}) {
@@ -81,116 +82,149 @@ const SUGGESTIONS_QUERY = `query Suggestions($limit: IntType, $offset: [ItemId])
   }
 }`
 
-const payloadFactory = (field: string, queryType: UserQueryType) => {
-  const payload = {
-    ONE_USER: {
-      query: ONE_USER_QUERY,
-      variables: { authreference: field },
-    },
-    ONE_USER_SUMMARY: {
-      query: ONE_USER_SUMMARY_QUERY,
-      variables: { username: field },
-    },
+const FOLLOWERS_QUERY = `query Followers($limit: IntType, $id: ItemId) {
+  allFollowers(first: $limit, filter: {user: {eq: $id}}) {
+    id
+    authreference
+    follower {
+      name
+      lastname
+      email
+      createdAt
+      username
+      id
+      thumbnail {
+        basename
+        url
+      }
+    }
   }
+}
+`
 
-  return payload[queryType]
+const payloadFactory = (field: string, queryType: UserQueryType) => {
+    const payload = {
+        ONE_USER: {
+            query: ONE_USER_QUERY,
+            variables: { authreference: field },
+        },
+        ONE_USER_SUMMARY: {
+            query: ONE_USER_SUMMARY_QUERY,
+            variables: { username: field },
+        },
+    }
+
+    return payload[queryType]
 }
 
 export const getUser = async (
-  field: string,
-  queryType: UserQueryType
+    field: string,
+    queryType: UserQueryType
 ): Promise<UserProps> => {
-  const { query, variables } = payloadFactory(field, queryType)
+    const { query, variables } = payloadFactory(field, queryType)
 
-  const { user } = await request({
-    query,
-    variables,
-    preview: false,
-  })
+    const { user } = await request({
+        query,
+        variables,
+        preview: false,
+    })
 
-  return user
+    return user
 }
 
 export const createUser = async (payload: any) => {
-  try {
-    const client = await clientRequest()
+    try {
+        const client = await clientRequest()
 
-    const upload = await client.uploads.createFromUrl({
-      url: `https://api.multiavatar.com/${payload.nickname}.png`,
-      skipCreationIfAlreadyExists: true,
-    })
+        const upload = await client.uploads.createFromUrl({
+            url: `https://api.multiavatar.com/${payload.nickname}.png`,
+            skipCreationIfAlreadyExists: true,
+        })
 
-    const user = await client.items.create({
-      item_type: { id: SCHEMA_TYPES.USER, type: 'item_type' },
-      meta: {
-        status: 'published',
-      },
-      name: `${payload.nickname} user`,
-      lastname: payload.email,
-      username: payload.nickname,
-      email: payload.email,
-      authreference: payload.nickname,
-      thumbnail: {
-        upload_id: upload.id,
-        alt: payload.nickname,
-        title: payload.nickname,
-      },
-      isnew: true,
-    })
+        const user = await client.items.create({
+            item_type: { id: SCHEMA_TYPES.USER, type: 'item_type' },
+            meta: {
+                status: 'published',
+            },
+            name: `${payload.nickname} user`,
+            lastname: payload.email,
+            username: payload.nickname,
+            email: payload.email,
+            authreference: payload.nickname,
+            thumbnail: {
+                upload_id: upload.id,
+                alt: payload.nickname,
+                title: payload.nickname,
+            },
+            isnew: true,
+        })
 
-    return {
-      id: user.id,
-      name: user.name,
-      lastname: user.lastname,
-      email: user.email,
-      createdAt: user.createdAt,
-      username: user.username,
-      authreference: user.authreference,
-      issuer: user.authreference,
-    } as UserProps
-  } catch (e) {
-    if (e instanceof ApiError) {
-      console.log('ERROR__', e)
-    } else {
-      throw e
+        return {
+            id: user.id,
+            name: user.name,
+            lastname: user.lastname,
+            email: user.email,
+            createdAt: user.createdAt,
+            username: user.username,
+            authreference: user.authreference,
+            issuer: user.authreference,
+        } as UserProps
+    } catch (e) {
+        if (e instanceof ApiError) {
+            console.log('ERROR__', e)
+        } else {
+            throw e
+        }
     }
-  }
 }
 
 export const getSuggestions = async (
-  limit: number,
-  offset: string
+    limit: number,
+    offset: string
 ): Promise<UserProps[]> => {
-  const { allUsers } = await request({
-    query: SUGGESTIONS_QUERY,
-    variables: { limit, offset },
-    preview: false,
-  })
+    const { allUsers } = await request({
+        query: SUGGESTIONS_QUERY,
+        variables: { limit, offset },
+        preview: false,
+    })
 
-  return allUsers
+    return allUsers
+}
+
+export const getFollowers = async (
+    limit: number,
+    id: string
+): Promise<FollowerProps[]> => {
+    const { allFollowers } = await request({
+        query: FOLLOWERS_QUERY,
+        variables: { limit, id },
+        preview: false,
+    })
+
+    return allFollowers
 }
 
 export const updateUserFollows = async (
-  user: UserProps,
-  followings: string[]
+    user: UserProps,
+    followings: string[]
 ) => {
-  try {
-    const client = await clientRequest()
+    try {
+        const client = await clientRequest()
 
-    const follow = await client.items.update(String(user?.id), {
-      item_type: { id: SCHEMA_TYPES.USER, type: 'item_type' },
-      meta: {
-        status: 'published',
-      },
-      followers: [...(followings as string[])],
-    })
+        const follow = await client.items.update(String(user?.id), {
+            item_type: { id: SCHEMA_TYPES.USER, type: 'item_type' },
+            meta: {
+                status: 'published',
+            },
+            followers: [...(followings as string[])],
+        })
 
-    return follow
-  } catch (e) {
-    if (e instanceof ApiError) {
-      console.log('ERROR__', e)
-    } else {
-      throw e
+        return follow
+    } catch (e) {
+        if (e instanceof ApiError) {
+            console.log('ERROR__', e)
+        } else {
+            throw e
+        }
     }
-  }
 }

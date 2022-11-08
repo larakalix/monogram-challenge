@@ -1,31 +1,30 @@
-import clsx from "clsx";
-import Link from "next/link";
-import { useState } from "react";
-import { UserProps } from "types/data/user";
-import { User } from "../User";
-import { useFollowCard } from "@hooks/following/useFollowCard";
+import clsx from 'clsx'
+import Link from 'next/link'
+import { useState } from 'react'
+import { UserProps } from 'types/data/user'
+import { User } from '../User'
+import { useFollowCard } from '@hooks/following/useFollowCard'
 
 type Props = {
-    follower: UserProps;
-    isFollowing: boolean;
-};
+    follower: UserProps
+    isFollowing: boolean
+}
 
 export const FollowCard = ({ follower, isFollowing }: Props) => {
-    const { follow, handleClick } = useFollowCard();
+    const { handleClick } = useFollowCard()
     const [state, setState] = useState({
-        isFollowing,
         isLoading: false,
-    });
+    })
 
-    const handleState = (isFollowing: boolean, isLoading: boolean) =>
-        setState((prev) => ({ ...prev, isFollowing, isLoading }));
+    const handleState = (isLoading: boolean) =>
+        setState((prev) => ({ ...prev, isLoading }))
 
-    if (!follower) return null;
+    if (!follower) return null
 
     const styles = clsx({
-        ["bg-transparent text-label-gray"]: state.isFollowing,
-        ["bg-main-blue text-white"]: !state.isFollowing,
-    });
+        ['bg-transparent text-label-gray']: isFollowing,
+        ['bg-primary-button text-white']: !isFollowing,
+    })
 
     return (
         <div
@@ -49,13 +48,13 @@ export const FollowCard = ({ follower, isFollowing }: Props) => {
                 onClick={() =>
                     handleClick({
                         follower: follower.id,
-                        isFollowing: state.isFollowing,
+                        isFollowing,
                         handleState,
                     })
                 }
             >
-                {state.isFollowing ? "Following" : "Follow"}
+                {isFollowing ? 'Following' : 'Follow'}
             </button>
         </div>
-    );
-};
+    )
+}
