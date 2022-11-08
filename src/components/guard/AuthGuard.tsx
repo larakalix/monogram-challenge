@@ -37,10 +37,12 @@ export const AuthGuard = ({ children }: Props) => {
     const hasUser = Boolean(data?.user && Object.keys(data?.user).length > 0)
 
     useEffect(() => {
+        if (!user && !currentUser) {
+            Router.push('/')
+            return
+        }
         if (!user || !hasUser || !!error) {
             if (currentUser) cleanUser()
-
-            Router.push('/')
             return
         }
 
