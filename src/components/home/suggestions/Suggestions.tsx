@@ -8,7 +8,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export const Suggestions = () => {
   const { user, followings } = useUserStore((state) => state)
-  const { data, error } = useSWR<{ suggestions: UserProps[] }>(user ? `${API_CONSTANTS.suggestions}/${user?.id}` : null, fetcher)
+  const { data, error } = useSWR<{ suggestions: UserProps[] }>(
+    user ? `${API_CONSTANTS.suggestions}/${user?.id}` : null,
+    fetcher
+  )
 
   if (!data) return null
 

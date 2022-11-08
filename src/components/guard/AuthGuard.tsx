@@ -39,11 +39,11 @@ export const AuthGuard = ({ children }: Props) => {
   useEffect(() => {
     if (!user || !hasUser || !!error) {
       if (currentUser) cleanUser()
-      
+
       Router.push('/')
       return
     } else {
-      const followings = data?.user?.followers.map(
+      const followings = data?.user?.followers?.map(
         ({ follower }: { follower: FollowerProps }) => follower.id
       )
       setUser(data?.user, followings)

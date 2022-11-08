@@ -20,13 +20,6 @@ export default async function user(
       user = (await createUser(payload)) as UserProps
     }
 
-    if (!user.thumbnail) {
-      user.thumbnail = {
-        basename: user.username,
-        url: `https://api.multiavatar.com/${user.username}.png`,
-      }
-    }
-
     res.status(200).json({ user: { ...user, issuer: payload?.nickname } })
   } catch (error: any) {
     console.log(error)

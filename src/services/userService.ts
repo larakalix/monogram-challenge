@@ -114,6 +114,12 @@ export const getUser = async (
 export const createUser = async (payload: any) => {
   try {
     const client = await clientRequest()
+
+    const upload = await client.uploads.createFromUrl({
+      url: `https://api.multiavatar.com/${payload.nickname}.png`,
+      skipCreationIfAlreadyExists: true,
+    })
+
     const user = await client.items.create({
       item_type: { id: SCHEMA_TYPES.USER, type: 'item_type' },
       meta: {
@@ -124,7 +130,12 @@ export const createUser = async (payload: any) => {
       username: payload.nickname,
       email: payload.email,
       authreference: payload.nickname,
-      isNew: true,
+      thumbnail: {
+        upload_id: upload.id,
+        alt: payload.nickname,
+        title: payload.nickname,
+      },
+      isnew: true,
     })
 
     return {
@@ -150,7 +161,6 @@ export const getSuggestions = async (
   limit: number,
   offset: string
 ): Promise<UserProps[]> => {
-  console.log('OFFSET___', offset)
   const { allUsers } = await request({
     query: SUGGESTIONS_QUERY,
     variables: { limit, offset },
