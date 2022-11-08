@@ -6,7 +6,7 @@ export const UpdateUser = async (id: string, user: any) => {
         lastname: user.lastname,
         email: user.email,
         username: user.username,
-        isNew: false,
+        isnew: false,
     });
 
     return response;
