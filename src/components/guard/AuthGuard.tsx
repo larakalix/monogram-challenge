@@ -23,7 +23,11 @@ export const AuthGuard = ({ children }: Props) => {
     method: 'POST',
     body: JSON.stringify(user),
   }
-  const { setUser } = useUserStore((state) => state)
+  const {
+    user: currentUser,
+    setUser,
+    cleanUser,
+  } = useUserStore((state) => state)
   const { data, error } = useSWR(
     user ? [API_CONSTANTS.user, payload] : null,
     fetcher
@@ -34,6 +38,8 @@ export const AuthGuard = ({ children }: Props) => {
 
   useEffect(() => {
     if (!user || !hasUser || !!error) {
+      if (currentUser) cleanUser()
+      
       Router.push('/')
       return
     } else {
@@ -41,7 +47,6 @@ export const AuthGuard = ({ children }: Props) => {
         ({ follower }: { follower: FollowerProps }) => follower.id
       )
       setUser(data?.user, followings)
-      console.log('REDIRECT_TO_HOME')
       if (['/'].includes(Router.asPath)) Router.push('/home')
     }
   }, [finished, hasUser])

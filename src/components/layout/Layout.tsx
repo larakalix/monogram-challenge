@@ -29,7 +29,7 @@ export const Layout = () => {
     ['left-[-15rem]']: !toogle,
   })
 
-  
+  if (!user) return null
 
   return (
     <div
